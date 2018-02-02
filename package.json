@@ -12,6 +12,26 @@
     "express": "~4.15.5",
     "jade": "~1.11.0",
     "morgan": "~1.9.0",
-    "serve-favicon": "~2.4.5"
-  }
+    "serve-favicon": "~2.4.5",
+    "pdf-image":"latest"
+  },
+  "description": "score scrapper",
+  "main": "app.js",
+  "bin": {
+    "scoreparts": "scoreSplitter..js"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/claudefauconnet/scoreparts.git"
+  },
+  "keywords": [
+    "score"
+  ],
+  "author": "claude fauconnet",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/claudefauconnet/scoreparts/issues"
+  },
+  "homepage": "https://github.com/claudefauconnet/scoreparts#readme"
 }
