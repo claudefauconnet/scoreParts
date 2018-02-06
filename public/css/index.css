@@ -1,0 +1,163 @@
+@CHARSET "ISO-8859-1";
+
+
+
+body {
+	background-color: #FCFAF7;
+}
+
+
+
+#imageSplitterDiv{
+	border-radius: 5px;
+	border-width: thin;
+	border-style: solid;
+	position: absolute;
+	top: 3px;
+	left: 10px;
+	width: 1040px;
+	height: 600px;
+	padding: 2px;
+	margin: 2px;
+	font-size: 14px;
+	font-family: verdana, sans-serif;
+	font-weight: bold;
+}
+
+
+#tabs {
+	border-radius: 5px;
+	border-width: thin;
+	border-style: solid;
+	position: absolute;
+	top: 3px;
+	left: 230px;
+	width: 1040px;
+	height: 600px;
+	padding: 2px;
+	margin: 2px;
+	font-size: 14px;
+	font-family: verdana, sans-serif;
+	font-weight: bold;
+
+
+}
+
+#tabs-radar, #tabs-spreadsheet,#tabs-graph, #tabs-admin,#tabs-import,#tabs-home,#tabs-query {
+	padding: 2px;
+	margin: 2px;
+	height: 600px;
+	visibility: hidden;
+}
+
+#tabs-graph {
+	
+
+	font-size: 12px;
+	font-family: verdana, sans-serif;
+	font-weight: normal;
+	color: #999;
+	color: #667;
+
+}
+
+
+#left-radar, #left-graph,#left-empty, #left-x{
+	padding: 2px;
+	border-radius: 10px;
+	border-width: thin;
+	border-style: none;
+	position: absolute;
+	left: -235px;
+	top: 25px;
+	width: 225px;
+	height: 580px;
+	background-color: white;
+	font-size: 14px;
+	font-family: verdana, sans-serif;
+	font-weight: normal;
+	z-index: 9;
+}
+
+
+#header {
+	border-width: thin;
+	border-style: none;
+	position: relative;
+	top: 0px;
+	left: 0px;
+	width: 1200px;
+	height: 30px;
+	text-align: center;
+}
+
+#title {
+	position: relative;
+	top: 5px;
+	left: 100px;
+	font-size: 18px;
+	font-family: verdana, sans-serif;
+	font-weight: bold;
+}
+
+.title {
+	position: relative;
+	top: 5px;
+	left: 10px;
+	font-size: 18px;
+	font-family: serif;
+	font-weight: bold;
+}
+
+
+
+
+
+#spreadsheetImport {
+	font-size: 12px;
+	font-family: verdana, sans-serif;
+	font-weight: normal;
+	height: 540px;
+	overflow: scroll;
+}
+
+#spreadsheetGraph{
+	font-size: 12px;
+	font-family: verdana, sans-serif;
+	font-weight: normal;
+	height: 5000px;
+	overflow: scroll;
+}
+
+
+
+
+#stateDisplay {
+	position: absolute;
+	top: 5px;
+	left: 10px;
+	font-family: verdana, sans-serif;
+	font-weight: normal;
+	text-align: center;
+}
+
+#loginDiv,#changePaswordDiv{
+	position: absolute;
+	top: 100px;
+	left: 500px;
+	background: #D6D6C2;
+	opacity: 0.95;
+	z-index: 30;
+	width: 300px;
+	height: 200px;
+	visibility: hidden;
+	font-size: 12px;
+	font-family: verdana, sans-serif;
+	font-weight: normal;
+	border-radius: 10px;
+}
+#changePaswordDiv{
+	height: 280px;
+	z-index=35;
+
+}

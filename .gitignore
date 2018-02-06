@@ -57,3 +57,10 @@ typings/
 # dotenv environment variables file
 .env
 
+*.pdf
+*.png
+*.json
+public/js/d3/d3.js
+public/js/Copy of imageSplitter.js
+public/js/jquery/external/jquery/jquery.js
+*.jar
