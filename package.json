@@ -1,6 +1,6 @@
 {
   "name": "scoreparts",
-  "version": "0.0.0",
+  "version": "0.1.1",
   "private": true,
   "scripts": {
     "start": "node ./bin/www"
@@ -15,7 +15,8 @@
     "morgan": "~1.9.0",
     "pdf-image": "latest",
     "async": "latest",
-    "serve-favicon": "~2.4.5"
+    "serve-favicon": "~2.4.5",
+    "multer": "latest"
   },
   "description": "score scrapper",
   "main": "app.js",

@@ -124,11 +124,16 @@
         <td>
             <div id="importDiv">
 
-                <form action="imageUpload" method="post" enctype="multipart/form-data" onsubmit="onFormSubmit()">
+            <!--    <form action="imageUpload" method="post" enctype="multipart/form-data" onsubmit="onFormSubmit()">
                     <input type="hidden" name="fileName" id="fileName">
                     <input type="file" id="toUploadFile" name="rawData" accept="pdf"> <input type="submit"
                                                                                              name="télécharger">
 
+                </form>-->
+                <form enctype="multipart/form-data" action="/upload" method="post"
+                      target="votar">
+                    <input type="file" name="cypher" class='exportNeo' onblur= 'onFileButton()';>
+                    <input type="submit" value="upload" name="submit" class='exportNeo'/>
                 </form>
 
             </div>

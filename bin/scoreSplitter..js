@@ -1,8 +1,10 @@
 var fs = require('fs');
-var PDFImage = require("pdf-image").PDFImage;
+//var PDFImage = require("pdf-image").PDFImage;
 var Jimp = require("jimp");
 var async = require('async');
 var PDFDocument = require('pdfkit');
+var path = require('path');
+var exec = require('child_process').exec;
 //var pdf2png=require('pdf2png-mp2');
 
 
@@ -15,7 +17,7 @@ var scoreSplitter = {
     imagesDir: "D:\\GitHub\\scoreparts\\public\\data\\images\\",
 
     listScores: function (callback) {
-        return callback(null, ["rameau1.pdf", "IMSLP-berceuseFaure.pdf","Rameau-LaForqueray.pdf"]);
+        return callback(null, ["rameau1.pdf", "IMSLP-berceuseFaure.pdf", "Rameau-LaForqueray.pdf", "Rameau_III.pdf"]);
     },
 
 
@@ -31,31 +33,73 @@ var scoreSplitter = {
 
 
      },*/
-    pdfBoxToSize: function (pdfName) {
 
+    pdfToImages: function (pdfName, callback) {
+
+        var jarPath = path.resolve(__dirname, "../java/pdfbox-app-2.0.8.jar");
+        var pdfPath = path.resolve(__dirname, "../data/pdf/" + pdfName);
+        var outputPrefix = pdfPath.substring(0, pdfPath.lastIndexOf(".")) + "-";
+        outputPrefix = path.resolve(outputPrefix.replace(/data[\/\\]pdf/g, "data/png/raw"));
+        var cmd = "java -jar " + jarPath + " PDFToImage -outputPrefix " + outputPrefix + " -imageType  png " + pdfPath
+        console.log("EXECUTING " + cmd)
+        exec(cmd, function (err, stdout, stderr) {
+            if (err)
+                return callback(err);
+            if (stderr && stderr != "") {
+                console.log(stderr);
+                return callback(stderr);
+
+
+            }
+            console.log(stdout);
+            var i = 1;
+            var stop = false;
+            var imgPathes = []
+            do {
+                var imgPath = outputPrefix + i + ".png";
+                if (!fs.existsSync(imgPath))
+                    stop = true;
+                else {
+                    i++;
+                    imgPathes.push(imgPath)
+                }
+
+            } while (stop === false || i > 10000);
+
+            async.eachSeries(imgPathes, function (imgPath, callbackEachImg) {
+                    Jimp.read(imgPath, function (err, image) {
+                        if (err) {
+                            console.log(err);
+                            return callbackEachImg(err);
+                        }
+                        image.resize(595, 842);
+                        var imgPathResized = imgPath.replace("/data/png/raw/", "/data/png/");
+                        image.write(imgPathResized);
+                        callbackEachImg()
+                    });
+                }, function (err) {//end eachSeries
+
+                    async.eachSeries(imgPathes, function (imgPath, callbackEachImg2) {
+                        try {
+                            fs.unlinkSync(imgPath);
+                        }
+                        catch (e) {
+                            callbackEachImg2(e);
+                        }
+                        callbackEachImg2();
+                    }, function (err) {
+                        if (err)
+                            return callback(err);
+                        console.log("done images :" + imgPathes.length);
+                        callback("done images :" + imgPathes.length);
+
+                    })
+                }
+            )
+        });
+        return;
         var files = []
         var dir = "D:\\GitHub\\scoreparts\\data\\";
-        for (var i = 1; i < 20; i++) {
-            var k = i
-            var imgFile = pdfName+"-" + k + ".png";
-            files.push(imgFile);
-        }
-
-        async.eachSeries(files, function (imgFile, callback) {
-                Jimp.read( dir +imgFile, function (err, image) {
-                    if (err)
-                        return console.log(err);
-                    image.resize(595, 842);
-                //    image.scale(0.5)
-                    var dir2 = "D:\\GitHub\\scoreparts\\public\\data\\images\\";
-                    var j = i - 1
-                    image.write(dir2 + imgFile);
-                    callback()
-                });
-            }, function (err) {
-                console.log('done');
-            }
-        )
 
 
     }
@@ -63,7 +107,7 @@ var scoreSplitter = {
     ,
 
 
-    split: function (pdfFile) {
+   /* split: function (pdfFile) {
         var options = {};
         options.convertOptions = {};
         options.convertOptions["-resize"] = "595x842";
@@ -101,7 +145,7 @@ var scoreSplitter = {
             })
     }
 
-    ,
+    ,*/
 
     generatePart: function (pdfName, part, zonesStr, callback) {
 
@@ -139,7 +183,7 @@ var scoreSplitter = {
         var zonesWithImages = []
         async.eachSeries(scoreSplitter.zones, function (zone, callbackEach) {
             var strs = zone.divId.split("z");
-            var page =""+strs[0].substring(1);//(parseInt( )+1;//decalage dans les numero d'images
+            var page = "" + strs[0].substring(1);//(parseInt( )+1;//decalage dans les numero d'images
             var sourceImg = zone.pdfName + "-" + page + ".png";
             var imageFile = scoreSplitter.imagesDir + sourceImg;
 
@@ -282,6 +326,7 @@ var scoreSplitter = {
 
 
 }
-
-//scoreSplitter.pdfBoxToSize("Rameau-LaForqueray");
+/*scoreSplitter.pdfToImages("Rameau1.pdf", function (err, result) {
+    xx = err;
+});*/
 module.exports = scoreSplitter;

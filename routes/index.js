@@ -1,20 +1,30 @@
 var express = require('express');
 var router = express.Router();
-var scoreSplitter=require( "../bin/scoreSplitter..js")
+var scoreSplitter = require("../bin/scoreSplitter..js");
+var fileUpload = require('../bin/fileUpload.js');
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+router.get('/', function (req, res, next) {
+    res.render('index', {title: 'Express'});
+});
+
+router.post('/upload', function (req, response) {
+    fileUpload.upload(req, function (error, result) {
+        if (error) {
+            return processResponse(response, error, result);
+        }
+        scoreSplitter.pdfToImages(result, function (error, result) {
+            processResponse(response, error, result)
+        });
+    });
 });
 
 
-
-
-router.post('/score', function(req, response, next) {
+router.post('/score', function (req, response, next) {
 
 
     if (req.body && req.body.listScores) {
-        scoreSplitter.listScores( function (error, result) {
+        scoreSplitter.listScores(function (error, result) {
             processResponse(response, error, result)
         })
 
@@ -27,7 +37,7 @@ router.post('/score', function(req, response, next) {
 
     }
     if (req.body && req.body.generatePart) {
-        scoreSplitter.generatePart(req.body.pdfName,req.body.part,req.body.zonesStr, function (error, result) {
+        scoreSplitter.generatePart(req.body.pdfName, req.body.part, req.body.zonesStr, function (error, result) {
             processResponse(response, error, result)
         })
 
@@ -36,7 +46,6 @@ router.post('/score', function(req, response, next) {
 
 
 });
-
 
 
 function processResponse(response, error, result) {
@@ -53,7 +62,7 @@ function processResponse(response, error, result) {
                 error = JSON.stringify(error, null, 2);
             }
             console.log("ERROR !!" + error);
-          //  socket.message("ERROR !!" + error);
+            //  socket.message("ERROR !!" + error);
             response.status(404).send({ERROR: error});
 
         }
@@ -63,7 +72,7 @@ function processResponse(response, error, result) {
 
             if (typeof result == "string") {
                 resultObj = {result: result};
-           //     socket.message(resultObj);
+                //     socket.message(resultObj);
                 response.send(JSON.stringify(resultObj));
             }
             else {
