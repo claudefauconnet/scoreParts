@@ -14,30 +14,30 @@ var exec = require('child_process').exec;
 var scoreSplitter = {
     zones: [],
     //  imagesDir: "./public/data/images/",
-    imagesDir: "D:\\GitHub\\scoreparts\\public\\data\\images\\",
+
+    rawImagesDir: "../data/pdf/",
+    resizedImagesDir: "../public/images/",
+    pdfsDir: "../data/pdf/",
 
     listScores: function (callback) {
-        return callback(null, ["rameau1.pdf", "IMSLP-berceuseFaure.pdf", "Rameau-LaForqueray.pdf", "Rameau_III.pdf"]);
+        var pdfs=[];
+        var pdfsDir=path.resolve(__dirname,scoreSplitter.pdfsDir);
+       var files = fs.readdirSync(pdfsDir, 'utf8');
+       for (var i=0;i<files.length;i++){
+           var p=files[i].toLowerCase().lastIndexOf(".pdf");
+           if(p>-1){
+               pdfs.push(files[i].substring(0,p))
+           }
+        }
+        return callback(null,pdfs);
     },
 
 
-    /* split2:function(){
-         var pdfFile=scoreSplitter.imagesDir + "rameau1.pdf"
-         pdfFile="C:\\Users\\claud\\Downloads\\bdHJy_violin_II.pdf"
-         pdf2image.convertPDF(pdfFile).then(
-             function(pageList){
-                 console.log(pageList);
-             }
-         );
-
-
-
-     },*/
 
     pdfToImages: function (pdfName, callback) {
 
         var jarPath = path.resolve(__dirname, "../java/pdfbox-app-2.0.8.jar");
-        var pdfPath = path.resolve(__dirname, "../data/pdf/" + pdfName);
+        var pdfPath = pdfName;//path.resolve(__dirname, "../data/pdf/" + pdfName);
         var outputPrefix = pdfPath.substring(0, pdfPath.lastIndexOf(".")) + "-";
         outputPrefix = path.resolve(outputPrefix.replace(/data[\/\\]pdf/g, "data/png/raw"));
         var cmd = "java -jar " + jarPath + " PDFToImage -outputPrefix " + outputPrefix + " -imageType  png " + pdfPath
@@ -73,18 +73,22 @@ var scoreSplitter = {
                             return callbackEachImg(err);
                         }
                         image.resize(595, 842);
-                        var imgPathResized = imgPath.replace("/data/png/raw/", "/data/png/");
+                        var imageName=path.basename(imgPath);
+
+                        var imgPathResized = path.resolve(__dirname,scoreSplitter.resizedImagesDir+imageName);
+
                         image.write(imgPathResized);
                         callbackEachImg()
                     });
                 }, function (err) {//end eachSeries
+
 
                     async.eachSeries(imgPathes, function (imgPath, callbackEachImg2) {
                         try {
                             fs.unlinkSync(imgPath);
                         }
                         catch (e) {
-                            callbackEachImg2(e);
+                           return callbackEachImg2(e);
                         }
                         callbackEachImg2();
                     }, function (err) {

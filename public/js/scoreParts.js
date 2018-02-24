@@ -1,6 +1,6 @@
 var scoreParts = (function () {
     var self = {};
-    var imagesDir = "/data/images/";
+    var imagesDir = "./images/";
 
 
     self.listScores = function () {
@@ -28,7 +28,7 @@ var scoreParts = (function () {
         });
 
     }
-    self.openFile = function () {
+    self.openFirstPdfPage = function () {
         var name = $('#scoresSelect').val();
         $("#fileName").val(name);
         if (name == "")

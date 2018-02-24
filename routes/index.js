@@ -9,11 +9,14 @@ router.get('/', function (req, res, next) {
 });
 
 router.post('/upload', function (req, response) {
-    fileUpload.upload(req, function (error, result) {
+    fileUpload.upload(req,"pdfFile", function (error, file) {
         if (error) {
             return processResponse(response, error, result);
         }
-        scoreSplitter.pdfToImages(result, function (error, result) {
+        if (!file || !file.path) {
+            return processResponse(response, "wrong file", null);
+        }
+        scoreSplitter.pdfToImages(file.path, function (error, result) {
             processResponse(response, error, result)
         });
     });
