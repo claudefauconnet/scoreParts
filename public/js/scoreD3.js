@@ -1,10 +1,10 @@
 scoreD3 = (function () {
     var self = {};
-    var zoneHeight = 55;
+    var zoneHeight = 50;
     self.pagesZoneData = {}
     var currentZone = null;
-    var imageWidth=744;
-    var imageHeight=1052;
+    var imageWidth=595;
+    var imageHeight=842;
 
     self.drawImage = function (imageUrl) {
 
@@ -35,7 +35,7 @@ scoreD3 = (function () {
             })
             .attr("xlink:href", function (d) {
                 return d.href;
-            }).attr("x", 0).attr("y", 0);
+            }).attr("x", 0).attr("y", 0).attr("width",imageWidth);
 
         function clickImg() {
 
@@ -126,7 +126,7 @@ scoreD3 = (function () {
 
 
     self.drawZoneRect = function (zones) {
-        aDiv = svgSplitter.selectAll().data(zones).enter().append("svg:g").on("click", clickZone).attr("class", "clipZone")
+        aDiv = svgSplitter.selectAll().data(zones).enter().append("svg:g").on("click", clickZone).attr("class", "zone")
             .attr("id", function (d) {
                 return d.divId;
             }).attr("width", function (d) {
@@ -223,6 +223,13 @@ scoreD3 = (function () {
             delete self.pagesZoneData[zoneId];
             var zoneGroup = d3.select("#" + zoneId);
             zoneGroup.remove();
+        }
+
+
+        self.deleteAllZones = function (zoneId) {
+            self.pagesZoneData={};
+            var zones = d3.selectAll(".zone");
+            zones.remove();
         }
 
 

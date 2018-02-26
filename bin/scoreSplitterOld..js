@@ -201,14 +201,8 @@ var scoreSplitter = {
                     console.log(err);
                     return callbackEach(err);
                 }
-                var w=image.bitmap.width;
-                var h=image.bitmap.height;
-                var ratio=w/zone.width;
-
-                var zoneImg = image.crop(zone.x*ratio, zone.y*ratio, zone.width*ratio, zone.height*ratio);
-                zoneImg.resize(zone.width,Jimp.AUTO,Jimp.RESIZE_NEAREST_NEIGHBOR);
+                var zoneImg = image.crop(zone.x, zone.y, zone.width, zone.height);
                 zoneImg.getBuffer(Jimp.MIME_PNG, function (err, img) {
-
                     zonesWithImages.push({img: img, zone: zone})
                     callbackEach();
                 });

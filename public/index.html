@@ -153,12 +153,12 @@
             <button onclick="scoreParts.previousPage()">page précédente</button>
             <button onclick="scoreParts.nextPage()">page suivante</button>
             <button onclick="scoreParts.repeatZonesFromPreviousPage(this)" style="visibility: hidden" id="duplicateZonesButton">dupliquer les zones </button>
-            <button onclick="scoreParts.repeatZonesFromPreviousPart(this)" style="visibility: hidden" id="duplicateZonesButton2">dupliquer les zones 2</button>
+            <button onclick="scoreParts.repeatZonesFromPreviousPart(this)" style="visibility: visible" id="duplicateZonesButton2">dupliquer les zones 2</button>
         </td>
         <td>
             <button class="buttonImportant" onclick="scoreParts.generateInstrumentScore()">Générer pdf partie</button>
             &nbsp;&nbsp;
-            <button onclick=scoreParts.clearZones()>recommencer</button>
+            <button onclick=scoreD3.deleteAllZones()>recommencer</button>
 
         </td>
     </tr>

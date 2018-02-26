@@ -201,7 +201,7 @@ var scoreParts = (function () {
     self.repeatZonesFromPreviousPart=function(button) {
 
 
-        var newZones = [];
+        var zones = [];
         for (var key in scoreD3.pagesZoneData) {
 
             var zone = scoreD3.pagesZoneData[key];
