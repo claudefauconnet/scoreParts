@@ -79,7 +79,7 @@ var scoreSplitter = {
                             console.log(err);
                             return callbackEachImg(err);
                         }
-                     //   image.resize(scoreSplitter.pageWidth,scoreSplitter.pageHeight);
+                    image.resize(scoreSplitter.pageWidth,scoreSplitter.pageHeight);
                         var imageName=path.basename(imgPath);
 
                         var imgPathResized = path.resolve(__dirname,scoreSplitter.resizedImagesDir+imageName);
@@ -205,11 +205,11 @@ var scoreSplitter = {
                 var h=image.bitmap.height;
                 var ratio=w/zone.width;
 
-                var zoneImg = image.crop(zone.x*ratio, zone.y*ratio, zone.width*ratio, zone.height*ratio);
-                zoneImg.resize(zone.width,Jimp.AUTO,Jimp.RESIZE_NEAREST_NEIGHBOR);
+                var zoneImg = image.crop(zone.x, zone.y, zone.width, zone.height);
+             //   zoneImg.resize(zone.width,Jimp.AUTO,Jimp.RESIZE_NEAREST_NEIGHBOR);
                 zoneImg.getBuffer(Jimp.MIME_PNG, function (err, img) {
 
-                    zonesWithImages.push({img: img, zone: zone})
+                    zonesWithImages.push({img: img, zone: zone,width:w,ratio:ratio})
                     callbackEach();
                 });
 
@@ -228,23 +228,28 @@ var scoreSplitter = {
     ,
 
     setTargetPages: function (zonesWithImages, callbackWaterfall) {
+        var intialYOffset=20
         var offsetX = 20;
-        var offsetY = 20;
+        var offsetY = intialYOffset;
         var vertStep = 20;
         var currentPage = [];
         var pages = [];
         for (var i = 0; i < zonesWithImages.length; i++) {
             var zone = zonesWithImages[i].zone;
-            offsetY += zone.height + 20;
+            offsetY += zone.height + vertStep*(zonesWithImages[i].ratio);
             if (offsetY > 700) {
                 pages.push(currentPage);
                 currentPage = [];
-                offsetY = 20;
+                offsetY = intialYOffset*(zone.ratio);
             }
             var pageZone = {
-                x: zone.x,
+                x: zone.x*(zonesWithImages[i].ratio),
                 y: offsetY,
-                img: zonesWithImages[i].img
+                img: zonesWithImages[i].img,
+                width:zonesWithImages[i].width,
+                ratio:zonesWithImages[i].ratio
+
+
             }
             currentPage.push(pageZone);
         }
@@ -259,8 +264,17 @@ var scoreSplitter = {
     blitImages: function (pages, callbackWaterfall) {
         var targetImages = [];
         async.eachSeries(pages, function (page, callbackPages) {
-            var blanckImgFile = path.resolve(__dirname,scoreSplitter.blankPageImg);
-            Jimp.read(blanckImgFile, function (err, blanckImg) {
+             /*  var blankWidth=page[0].width;
+                var blankRatio=page[0].ratio;
+                var blankHeight=blankWidth*1.141;4*/
+             //   var blankRatio=page[0].width;
+         /*    var blankImage = new Jimp(blankWidth, blankHeight, function (err, image) {
+
+             });*/
+         var blanckImgFile = path.resolve(__dirname,scoreSplitter.blankPageImg);
+         Jimp.read(blanckImgFile, function (err, blanckImg) {
+
+        //     blanckImg.resize(blankWidth,blankHeight);
 
 
                 async.eachSeries(page, function (pageZone, callbackZones) {
@@ -286,13 +300,14 @@ var scoreSplitter = {
 
                     })
 
-            })
+           })
         }, function (err) {
             if (err)
                 return callbackWaterfall(err);
             callbackWaterfall(null, targetImages);
 
         })
+
 
     }
     ,
