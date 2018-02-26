@@ -1,17 +1,20 @@
 scoreD3 = (function () {
     var self = {};
-    var zoneHeight=50;
-    self.pagesZoneData={}
+    var zoneHeight = 55;
+    self.pagesZoneData = {}
+    var currentZone = null;
+    var imageWidth=744;
+    var imageHeight=1052;
+
     self.drawImage = function (imageUrl) {
 
         var data = [{
             id: "img1",
             x: 0,
             y: 0,
-            w: globalWidth,
-            h: globalHeight,
-            // href: "http://localhost:8082/imageSplitter/images/testImg.png"
-            href:  imageUrl
+            w: imageWidth,
+            h: imageHeight,
+            href: imageUrl
 
         }];
 
@@ -19,32 +22,24 @@ scoreD3 = (function () {
 
         d3.select("svg").selectAll("*").remove();
         $("#imageSplitterDiv").html("");
-        $("#imageSplitterDiv").css("width", "" + globalWidth + "px");
-        $("#imageSplitterDiv").css("height", "" + globalHeight + "px");
+        $("#imageSplitterDiv").css("width", "" + imageWidth + "px");
+        $("#imageSplitterDiv").css("height", "" + imageHeight + "px");
 
         svgSplitter = d3.select("#imageSplitterDiv").append("svg").attr("width", globalWidth).attr("height", globalHeight);
         aDiv = svgSplitter.selectAll().data(zoneData).enter().append("svg:g").on("click", click).attr("class", "clipZone");
 
         imgs = svgSplitter.selectAll("image").data(data);
-        imgs.enter().append("svg:image")  .on("click", clickImg)
+        imgs.enter().append("svg:image").on("click", clickImg)
             .attr("class", function (d) {
                 return "img";
             })
             .attr("xlink:href", function (d) {
                 return d.href;
-            }).attr("x",0).attr("y",0);
+            }).attr("x", 0).attr("y", 0);
 
-       function  clickImg(){
-        /*   var x = d3.event.sourceEvent.offsetX;
-           var y = d3.event.sourceEvent.offsetY;
-           var label = "p" + currentPage + "z" + currentZoneInPage;
+        function clickImg() {
 
-           }
-           if (label && label.length > 0) {
-               mouseClip.x1=0;
-               mouseClip.x2=592;
-               self.drawRect(mouseClip, "Z", label);*/
-       }
+        }
 
 
         var drag = d3.behavior.drag().on("dragstart", function (aaa) {
@@ -61,18 +56,21 @@ scoreD3 = (function () {
             mouseClip.y2 = y;
             setMessage("rect :" + JSON.stringify(mouseClip));
             d3.select(".dragRect").attr("width", x - mouseClip.x1).attr("height", y - mouseClip.y1);
+
         }).on("dragend", function (d) {
 
             var label = "p" + currentPage + "z" + currentZoneInPage;
-            if( !zoneHeight){
-                zoneHeight=mouseClip.y2-mouseClip.y1
+
+                var h = mouseClip.y2 - mouseClip.y1
+            if (h<30) {
+                    h=parseInt($("#zoneHeight").val());
             }
             if (label && label.length > 0) {
-                mouseClip.x1=0;
-                mouseClip.x2=595;
-                mouseClip.y2= mouseClip.y1+(zoneHeight/2);
-                mouseClip.y1=mouseClip.y1-(zoneHeight/2);
-                self.drawRect(mouseClip, "Z", label);
+                mouseClip.x1 = 0;
+                mouseClip.x2 = imageWidth;
+                mouseClip.y2 = mouseClip.y1 + (h / 2);
+                mouseClip.y1 = mouseClip.y1 - (h / 2);
+                self.addZone(mouseClip, label);
                 /*
                  * var e = d3.event; if (!aDiv) { } else{ moveRect(mouseClip); }
                  */
@@ -82,6 +80,8 @@ scoreD3 = (function () {
         });
 
         d3.selectAll(".img").call(drag);
+
+
         if (currentPage == 1)
             canDrawRect = true;
 
@@ -102,26 +102,33 @@ scoreD3 = (function () {
             return d.x;
         }).attr("y", function (d) {
             return d.y;
-        }).style("z-index", 100).style("stroke", "black").style("fill", "transparent").attr("class", "dragRect");
+        }).style("z-index", 100).style("stroke", "transparent").style("fill", "transparent").attr("class", "dragRect");
 
 
     }
 
-    self.drawRect = function (clipRect, type, label) {
+    self.addZone = function (clipRect, label) {
         var id = label;
-        zoneData = [{
+        zone = [{
             label: label,
             divId: id,
             x: clipRect.x1,
             y: clipRect.y1,
             width: clipRect.x2 - clipRect.x1,
-            height: clipRect.y2 - clipRect.y1
+            height: clipRect.y2 - clipRect.y1,
+            page: currentPage,
+            zoneIndex: currentZoneInPage
         }];
-        self.pagesZoneData["p" + currentPage + "z" + currentZoneInPage] = zoneData[0];
+        self.pagesZoneData[id] = zone[0];
         currentZoneInPage++;
-        aDiv = svgSplitter.selectAll().data(zoneData).enter().append("svg:g").on("click", click).attr("class", "clipZone")
+        self.drawZoneRect(zone);
+    }
+
+
+    self.drawZoneRect = function (zones) {
+        aDiv = svgSplitter.selectAll().data(zones).enter().append("svg:g").on("click", clickZone).attr("class", "clipZone")
             .attr("id", function (d) {
-                return id;
+                return d.divId;
             }).attr("width", function (d) {
                 return d.width;
             }).attr("height", function (d) {
@@ -150,95 +157,77 @@ scoreD3 = (function () {
         // aDiv.attr("x", clipRect.x1).attr("y", clipRect.y1);
         aDiv.attr("transform", function (d) {
             // d.x=-d.x/2;d.y=-d.y/2;
-            return "translate(" + clipRect.x1 + "," + (clipRect.y1) + ")";
+            return "translate(" + d.x + "," + (d.y) + ")";
 
         });
 
-        aDiv.call(d3.behavior.drag().on("dragstart", function () {
 
-            var oldRect = self.pagesZoneData[this.id];
-            var oldX2 = oldRect.x + oldRect.width;
-            var oldY2 = oldRect.y + oldRect.height;
-            var evtX = d3.event.sourceEvent.offsetX;
-            var evtY = d3.event.sourceEvent.offsetY;
-            mouseDragCurrentX = evtX;
-            mouseDragCurrentY = evtY;
+        function clickZone() {
+            var event = d3.event;
+            var zoneId = this.id;
 
-            setMessage((oldX2 - resizeSquare) + "  :  " + (oldY2 - resizeSquare));
-            if (evtX > (oldX2 - resizeSquare) && evtY > (oldY2 - resizeSquare)) {
-                $('.clipZone').css('cursor', 'crosshair');
-                isResizing = true;
-                console.log("Resizing init" + isResizing);
-            } else {
-                isResizing = false;
-                $('.clipZone').css('cursor', 'default');
+
+            if (d3.event.altKey) {
+                if (confirm("supprimer la zone ?"))
+                    self.deleteZone (zoneId);
+
+
             }
+        }
+
+            aDiv.call(d3.behavior.drag()
+                .on("dragstart", function () {
 
 
-        }).on("drag", function () {
-            if (isResizing) {
+                }).on("drag", function () {
+                    var zoneId = this.id;
+                    var y = d3.event.sourceEvent.offsetY - (self.pagesZoneData[zoneId].height / 2);
+                    var deltaY = self.pagesZoneData[zoneId].y - y;
+                    if (d3.event.sourceEvent.ctrlKey) {// translate all zones of the page
 
-                var oldRect = self.pagesZoneData[this.id];
+                        var ok = true;
+                        var index = 0;
+                        do {
+                            var zoneId = "p" + currentPage + "z" + index;
+                            index++;
+                            if (!self.pagesZoneData[zoneId]) {
+                                ok = false;
+                            } else {
 
-                var evtX = d3.event.sourceEvent.layerX;
-                var evtY = d3.event.sourceEvent.layerY;
-                // console.log(evtX+" : "+evtY);
-                var newWidth = evtX - oldRect.x;
-                var newHeight = evtY - oldRect.y;
-                setMessage(newWidth + "  :  " + newHeight);
-                var xCoef = newWidth / oldRect.width;
-                var yCoef = newHeight / oldRect.height;
-                d3.select(".dragRect").attr("width", newWidth).attr("height", newHeight);
-                // d3.select(".dragRect").attr("transform", "translate(" + oldRect.x +
-                // "," + oldRect.y + ")," + "scale(" + xCoef + "," + yCoef + ")");
+                                self.pagesZoneData[zoneId].y -= deltaY;
+                                var zoneD3 = d3.select("#" + zoneId);
 
-            } else {
+                                zoneD3.attr("transform", "translate(" + 0 + "," + self.pagesZoneData[zoneId].y + ")");
+                            }
+                        } while (ok)
 
-                oldRect = self.pagesZoneData[this.id];
-                var oldX = parseInt(d3.select(".dragRect").attr("x"));
-                var oldY = parseInt(d3.select(".dragRect").attr("y"));
-                var evtX = d3.event.sourceEvent.layerX;
-                var evtY = d3.event.sourceEvent.layerY;
-                console.log("Resizing drag" + isResizing);
-                var dx = evtX - mouseDragCurrentX;
-                var dy = evtY - mouseDragCurrentY;
 
-                var newX = oldX + dx;
-                var newY = oldY + dy;
-                d3.select(".dragRect").attr("x", newX).attr("y", newY);
+                    }
+                    else {//move only dragged zone
+                        self.pagesZoneData[zoneId].y = y;
+                        var zoneD3 = d3.select(this);
+                        zoneD3.attr("transform", "translate(" + 0 + "," + y + ")");
 
-                mouseDragCurrentX = evtX;
-                mouseDragCurrentY = evtY;
-            }
+                    }
+                    $('.clipZone').css('cursor', 'default');
 
-        }).on("dragend", function () {
-            console.log("Resizing end" + isResizing);
-            var rect = d3.select(".dragRect");
-            var newX = parseInt(rect.attr("x"));
-            var newY = parseInt(rect.attr("y"));
-            var newWidth = parseInt(rect.attr("width"));
-            var newHeight = parseInt(rect.attr("height"));
-            var zoneId = this.id
-            self.pagesZoneData[zoneId].x = newX;
-            self.pagesZoneData[zoneId].y = newY;
-            self.pagesZoneData[zoneId].width = newWidth;
-            self.pagesZoneData[zoneId].height = newHeight;
-            //  var zoneD3 = d3.select("#" + this.divId);
-            var zoneD3 = d3.select(this);
-            var coefX = newWidth / zoneD3.attr("width");
-            var coefY = newHeight / zoneD3.attr("height");
-            zoneD3.attr("transform", "translate(" + newX + "," + newY + ")," + "scale(" + coefX + "," + coefY + ")");
-            $('.clipZone').css('cursor', 'default');
 
-            if (isResizing) {
-                isResizing = false;
-            }
-        }));
+                }).on("dragend", function () {
+
+
+                }));
+
+        }
+
+        self.deleteZone = function (zoneId) {
+            delete self.pagesZoneData[zoneId];
+            var zoneGroup = d3.select("#" + zoneId);
+            zoneGroup.remove();
+        }
+
+
+        return self;
+
 
     }
-
-
-    return self;
-
-
-})()
+)()

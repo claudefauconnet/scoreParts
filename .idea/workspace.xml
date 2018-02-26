@@ -2,16 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="cd007939-7fbd-4eae-9504-25a4facc9d1a" name="Default" comment="">
+      <change beforePath="" afterPath="$PROJECT_DIR$/public/images/waitAnimated.gif" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/bin/fileUpload.js" afterPath="$PROJECT_DIR$/bin/fileUpload.js" />
       <change beforePath="$PROJECT_DIR$/bin/scoreSplitter..js" afterPath="$PROJECT_DIR$/bin/scoreSplitter..js" />
-      <change beforePath="$PROJECT_DIR$/bin/www" afterPath="$PROJECT_DIR$/bin/www" />
-      <change beforePath="$PROJECT_DIR$/data/pdf/readme.txt" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/data/rameau1.pdf" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/public/data/images/rameau-decoupage.zip" afterPath="" />
       <change beforePath="$PROJECT_DIR$/public/index.html" afterPath="$PROJECT_DIR$/public/index.html" />
+      <change beforePath="$PROJECT_DIR$/public/js/imageSplitter.js" afterPath="$PROJECT_DIR$/public/js/imageSplitter.js" />
+      <change beforePath="$PROJECT_DIR$/public/js/scoreD3.js" afterPath="$PROJECT_DIR$/public/js/scoreD3.js" />
+      <change beforePath="$PROJECT_DIR$/public/js/scoreD3b.js" afterPath="$PROJECT_DIR$/public/js/scoreD3b.js" />
       <change beforePath="$PROJECT_DIR$/public/js/scoreParts.js" afterPath="$PROJECT_DIR$/public/js/scoreParts.js" />
-      <change beforePath="$PROJECT_DIR$/routes/index.js" afterPath="$PROJECT_DIR$/routes/index.js" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -35,21 +33,21 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="scoreD3b.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/public/js/scoreD3b.js">
+      <file leaf-file-name="scoreParts.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/public/js/scoreParts.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1411">
-              <caret line="83" column="12" lean-forward="false" selection-start-line="83" selection-start-column="12" selection-end-line="83" selection-end-column="12" />
+            <state relative-caret-position="1127">
+              <caret line="218" column="0" lean-forward="false" selection-start-line="218" selection-start-column="0" selection-end-line="218" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="scoreParts.js" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/public/js/scoreParts.js">
+      <file leaf-file-name="scoreD3.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/public/js/scoreD3.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="68">
-              <caret line="4" column="0" lean-forward="true" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
+            <state relative-caret-position="-1024">
+              <caret line="64" column="23" lean-forward="false" selection-start-line="64" selection-start-column="23" selection-end-line="64" selection-end-column="23" />
               <folding />
             </state>
           </provider>
@@ -58,8 +56,8 @@
       <file leaf-file-name="index.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/routes/index.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="263">
-              <caret line="18" column="7" lean-forward="false" selection-start-line="18" selection-start-column="7" selection-end-line="18" selection-end-column="7" />
+            <state relative-caret-position="1700">
+              <caret line="100" column="0" lean-forward="false" selection-start-line="100" selection-start-column="0" selection-end-line="100" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -88,18 +86,21 @@
       <file leaf-file-name="index.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/public/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2261">
-              <caret line="133" column="37" lean-forward="false" selection-start-line="133" selection-start-column="37" selection-end-line="133" selection-end-column="37" />
-              <folding />
+            <state relative-caret-position="93">
+              <caret line="151" column="46" lean-forward="false" selection-start-line="151" selection-start-column="36" selection-end-line="151" selection-end-column="46" />
+              <folding>
+                <element signature="n#style#0;n#button#2;n#td#1;n#tr#2;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#button#3;n#td#1;n#tr#2;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="scoreSplitter..js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="scoreSplitter..js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/bin/scoreSplitter..js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="311">
-              <caret line="80" column="23" lean-forward="false" selection-start-line="80" selection-start-column="23" selection-end-line="80" selection-end-column="23" />
+            <state relative-caret-position="1241">
+              <caret line="73" column="50" lean-forward="false" selection-start-line="73" selection-start-column="50" selection-end-line="73" selection-end-column="50" />
               <folding />
             </state>
           </provider>
@@ -138,12 +139,9 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>name</find>
-      <find>drag</find>
       <find>nextPage()</find>
       <find>updateImage</find>
       <find>ajax</find>
-      <find>drawRect</find>
       <find>openFile()</find>
       <find>pagesZoneData</find>
       <find>executeMoreShortestPathButton</find>
@@ -155,13 +153,29 @@
       <find>mult</find>
       <find>split</find>
       <find>openFile</find>
+      <find>dragRect</find>
+      <find>current</find>
+      <find>drag</find>
+      <find>label</find>
       <find>imagesDir</find>
+      <find>setMes</find>
+      <find>setMe</find>
       <find>rawImagesDir</find>
+      <find>resizedImagesDir</find>
+      <find>6</find>
+      <find>repeatZones</find>
+      <find>drawRect</find>
+      <find>fileName</find>
+      <find>globalWidth</find>
+      <find>pdfsDir</find>
+      <find>zoneHeight</find>
     </findStrings>
     <replaceStrings>
       <replace>scoreD3.pagesZoneData</replace>
       <replace>self.pagesZoneData</replace>
       <replace>pdfToImages</replace>
+      <replace>drawZoneRect</replace>
+      <replace>scoresSelect</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -173,15 +187,15 @@
         <option value="$PROJECT_DIR$/bin/package.json" />
         <option value="$PROJECT_DIR$/public/js/imageSplitter.js" />
         <option value="$PROJECT_DIR$/bin/pdfToImages..js" />
-        <option value="$PROJECT_DIR$/public/js/scoreD3.js" />
         <option value="$PROJECT_DIR$/public/js/scoreD3b.js" />
         <option value="$PROJECT_DIR$/package.json" />
-        <option value="$PROJECT_DIR$/public/index.html" />
         <option value="$PROJECT_DIR$/bin/fileUpload.js" />
         <option value="$PROJECT_DIR$/bin/www" />
-        <option value="$PROJECT_DIR$/bin/scoreSplitter..js" />
         <option value="$PROJECT_DIR$/routes/index.js" />
         <option value="$PROJECT_DIR$/public/js/scoreParts.js" />
+        <option value="$PROJECT_DIR$/public/index.html" />
+        <option value="$PROJECT_DIR$/public/js/scoreD3.js" />
+        <option value="$PROJECT_DIR$/bin/scoreSplitter..js" />
       </list>
     </option>
   </component>
@@ -233,36 +247,18 @@
             <path>
               <item name="scoreparts" type="b2602c69:ProjectViewProjectNode" />
               <item name="scoreparts" type="462c0819:PsiDirectoryNode" />
-              <item name="data" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="scoreparts" type="b2602c69:ProjectViewProjectNode" />
-              <item name="scoreparts" type="462c0819:PsiDirectoryNode" />
-              <item name="data" type="462c0819:PsiDirectoryNode" />
-              <item name="pdf" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="scoreparts" type="b2602c69:ProjectViewProjectNode" />
-              <item name="scoreparts" type="462c0819:PsiDirectoryNode" />
-              <item name="data" type="462c0819:PsiDirectoryNode" />
-              <item name="png" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="scoreparts" type="b2602c69:ProjectViewProjectNode" />
-              <item name="scoreparts" type="462c0819:PsiDirectoryNode" />
-              <item name="data" type="462c0819:PsiDirectoryNode" />
-              <item name="png" type="462c0819:PsiDirectoryNode" />
-              <item name="raw" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="scoreparts" type="b2602c69:ProjectViewProjectNode" />
-              <item name="scoreparts" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="scoreparts" type="b2602c69:ProjectViewProjectNode" />
               <item name="scoreparts" type="462c0819:PsiDirectoryNode" />
               <item name="public" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="scoreparts" type="b2602c69:ProjectViewProjectNode" />
+              <item name="scoreparts" type="462c0819:PsiDirectoryNode" />
+              <item name="public" type="462c0819:PsiDirectoryNode" />
+              <item name="data" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="scoreparts" type="b2602c69:ProjectViewProjectNode" />
@@ -297,19 +293,19 @@
     <property name="last_opened_file_path" value="D:/nwjs-sdk-v0.28.2-win-x64/apps/mailArchiver" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\GitHub\scoreparts\java" />
+      <recent name="D:\GitHub\scoreparts\public\images" />
+      <recent name="D:\GitHub\scoreparts\public\js" />
+      <recent name="D:\GitHub\scoreparts\public" />
+      <recent name="D:\GitHub\scoreparts\public\data\originals" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\GitHub\scoreparts\public\data" />
       <recent name="D:\GitHub\scoreparts\data\png\raw" />
       <recent name="D:\GitHub\scoreparts\data\pdf" />
       <recent name="D:\GitHub\scoreparts\java" />
       <recent name="D:\GitHub\scoreparts\data" />
-      <recent name="D:\GitHub\scoreparts" />
-    </key>
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="D:\GitHub\scoreparts\public\js" />
-      <recent name="D:\GitHub\scoreparts\public" />
-      <recent name="D:\GitHub\scoreparts\public\data\originals" />
-      <recent name="D:\GitHub\scoreparts\bin" />
-      <recent name="D:\GitHub\scoreparts\public\images" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -349,12 +345,12 @@
       <workItem from="1517922763265" duration="10300000" />
       <workItem from="1519395817223" duration="451000" />
       <workItem from="1519493613694" duration="72000" />
-      <workItem from="1519493728924" duration="2827000" />
+      <workItem from="1519493728924" duration="25687000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="68434000" />
+    <option name="totallyTimeSpent" value="91294000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
@@ -388,7 +384,7 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="120" />
+      <option name="time" value="136" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -461,7 +457,10 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2261">
           <caret line="133" column="37" lean-forward="false" selection-start-line="133" selection-start-column="37" selection-end-line="133" selection-end-column="37" />
-          <folding />
+          <folding>
+            <element signature="n#style#0;n#button#2;n#td#1;n#tr#2;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#button#3;n#td#1;n#tr#2;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -554,7 +553,10 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2601">
           <caret line="153" column="39" lean-forward="false" selection-start-line="153" selection-start-column="39" selection-end-line="153" selection-end-column="39" />
-          <folding />
+          <folding>
+            <element signature="n#style#0;n#button#2;n#td#1;n#tr#2;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#button#3;n#td#1;n#tr#2;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -639,7 +641,10 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2329">
           <caret line="137" column="12" lean-forward="false" selection-start-line="137" selection-start-column="12" selection-end-line="137" selection-end-column="12" />
-          <folding />
+          <folding>
+            <element signature="n#style#0;n#button#2;n#td#1;n#tr#2;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#button#3;n#td#1;n#tr#2;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -666,13 +671,6 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/public/index2.html" />
-    <entry file="file://$PROJECT_DIR$/public/js/scoreD3.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1207">
-          <caret line="71" column="30" lean-forward="false" selection-start-line="71" selection-start-column="30" selection-end-line="71" selection-end-column="30" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/public/js/scoreD3b.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1411">
@@ -694,14 +692,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="323">
           <caret line="19" column="4" lean-forward="false" selection-start-line="19" selection-start-column="4" selection-end-line="19" selection-end-column="4" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/public/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2261">
-          <caret line="133" column="37" lean-forward="false" selection-start-line="133" selection-start-column="37" selection-end-line="133" selection-end-column="37" />
           <folding />
         </state>
       </provider>
@@ -732,24 +722,43 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/routes/index.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="263">
-          <caret line="18" column="7" lean-forward="false" selection-start-line="18" selection-start-column="7" selection-end-line="18" selection-end-column="7" />
+        <state relative-caret-position="1700">
+          <caret line="100" column="0" lean-forward="false" selection-start-line="100" selection-start-column="0" selection-end-line="100" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="93">
+          <caret line="151" column="46" lean-forward="false" selection-start-line="151" selection-start-column="36" selection-end-line="151" selection-end-column="46" />
+          <folding>
+            <element signature="n#style#0;n#button#2;n#td#1;n#tr#2;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#button#3;n#td#1;n#tr#2;n#table#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/js/scoreParts.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1127">
+          <caret line="218" column="0" lean-forward="false" selection-start-line="218" selection-start-column="0" selection-end-line="218" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/js/scoreD3.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1024">
+          <caret line="64" column="23" lean-forward="false" selection-start-line="64" selection-start-column="23" selection-end-line="64" selection-end-column="23" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/bin/scoreSplitter..js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="311">
-          <caret line="80" column="23" lean-forward="false" selection-start-line="80" selection-start-column="23" selection-end-line="80" selection-end-column="23" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/public/js/scoreParts.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="4" column="0" lean-forward="true" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
+        <state relative-caret-position="1241">
+          <caret line="73" column="50" lean-forward="false" selection-start-line="73" selection-start-column="50" selection-end-line="73" selection-end-column="50" />
           <folding />
         </state>
       </provider>

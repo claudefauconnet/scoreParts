@@ -15,13 +15,17 @@ var scoreSplitter = {
     zones: [],
     //  imagesDir: "./public/data/images/",
 
-    rawImagesDir: "../data/pdf/",
-    resizedImagesDir: "../public/images/",
-    pdfsDir: "../data/pdf/",
+    rawImagesDir: "data/pdf",
+    sourcePdfsDir: "../data/pdf/",
+    blankPageImg:"../data/_blank.png",
+    resizedImagesDir: "../public/data/images/",
+    targetPdfDir: "../public/data/pdfs/",
+    pageWidth:744,//595*1.25 ,
+    pageHeight:1052,// 842*1.25,
 
     listScores: function (callback) {
         var pdfs=[];
-        var pdfsDir=path.resolve(__dirname,scoreSplitter.pdfsDir);
+        var pdfsDir=path.resolve(__dirname,scoreSplitter.sourcePdfsDir);
        var files = fs.readdirSync(pdfsDir, 'utf8');
        for (var i=0;i<files.length;i++){
            var p=files[i].toLowerCase().lastIndexOf(".pdf");
@@ -36,21 +40,24 @@ var scoreSplitter = {
 
     pdfToImages: function (pdfName, callback) {
 
-        var jarPath = path.resolve(__dirname, "../java/pdfbox-app-2.0.8.jar");
+     //   var jarPath = path.resolve(__dirname, "../java/pdfbox-app-2.0.8.jar");
+        var jarPath = path.resolve(__dirname, "../java/pdf2images.jar");
         var pdfPath = pdfName;//path.resolve(__dirname, "../data/pdf/" + pdfName);
         var outputPrefix = pdfPath.substring(0, pdfPath.lastIndexOf(".")) + "-";
-        outputPrefix = path.resolve(outputPrefix.replace(/data[\/\\]pdf/g, "data/png/raw"));
-        var cmd = "java -jar " + jarPath + " PDFToImage -outputPrefix " + outputPrefix + " -imageType  png " + pdfPath
+      //  outputPrefix = path.resolve(outputPrefix.replace(/data[\/\\]pdf/g, scoreSplitter.rawImagesDir));
+        var cmd = "java -jar " +jarPath+" "+ pdfPath;
+    //    var cmd = "java -jar " + jarPath + " PDFToImage -outputPrefix " + outputPrefix + " -imageType  png " + pdfPath
         console.log("EXECUTING " + cmd)
         exec(cmd, function (err, stdout, stderr) {
             if (err)
                 return callback(err);
-            if (stderr && stderr != "") {
+           /* if (stderr && stderr != "") {
                 console.log(stderr);
                 return callback(stderr);
 
 
-            }
+            }*/
+            console.log(stderr);
             console.log(stdout);
             var i = 1;
             var stop = false;
@@ -72,7 +79,7 @@ var scoreSplitter = {
                             console.log(err);
                             return callbackEachImg(err);
                         }
-                        image.resize(595, 842);
+                     //   image.resize(scoreSplitter.pageWidth,scoreSplitter.pageHeight);
                         var imageName=path.basename(imgPath);
 
                         var imgPathResized = path.resolve(__dirname,scoreSplitter.resizedImagesDir+imageName);
@@ -153,14 +160,11 @@ var scoreSplitter = {
 
     generatePart: function (pdfName, part, zonesStr, callback) {
 
-        var zonesObj = JSON.parse(zonesStr);
+        var zones = JSON.parse(zonesStr);
         fs.writeFileSync(scoreSplitter.imagesDir + "zones-" + pdfName + "-" + part + ".json", zonesStr)
-        scoreSplitter.zones = [];
-        for (var key in zonesObj) {
-            zonesObj[key].pdfName = pdfName;
-            scoreSplitter.zones.push(zonesObj[key])
+            scoreSplitter.zones=zones;
 
-        }
+
 
 
         var targetPagesImages = [];
@@ -189,7 +193,8 @@ var scoreSplitter = {
             var strs = zone.divId.split("z");
             var page = "" + strs[0].substring(1);//(parseInt( )+1;//decalage dans les numero d'images
             var sourceImg = zone.pdfName + "-" + page + ".png";
-            var imageFile = scoreSplitter.imagesDir + sourceImg;
+            var imageDir= path.resolve(__dirname,scoreSplitter.resizedImagesDir);
+            var imageFile = imageDir+path.sep+ sourceImg;
 
             Jimp.read(imageFile, function (err, image) {
                 if (err) {
@@ -248,7 +253,7 @@ var scoreSplitter = {
     blitImages: function (pages, callbackWaterfall) {
         var targetImages = [];
         async.eachSeries(pages, function (page, callbackPages) {
-            var blanckImgFile = scoreSplitter.imagesDir + "_blanck.png";
+            var blanckImgFile = path.resolve(__dirname,scoreSplitter.blankPageImg);
             Jimp.read(blanckImgFile, function (err, blanckImg) {
 
 
@@ -289,15 +294,25 @@ var scoreSplitter = {
 
     wtitePagesToPdf: function (pdfName, part, pagesImagesArray, callback) {
         var title = pdfName + "-" + part;
-        var partPdfFile = scoreSplitter.imagesDir + pdfName + "-" + part + ".pdf";
-        if (fs.existsSync(partPdfFile))
-            fs.unlinkSync(partPdfFile)
+        var pdfsDir=path.resolve(__dirname,scoreSplitter.targetPdfDir);
+        var partPdfFile =pdfsDir+path.sep + pdfName + "-" + part + ".pdf";
+        if (fs.existsSync(partPdfFile)) {
+
+            try{
+                fs.unlinkSync(partPdfFile);
+            }catch(e){
+               return  callback("fichier existant et ouvert impossible d'enrgistrer le nouveau fichier");
+            }
+        }
         var partPdfUrl = "/data/images" + pdfName + "-" + part + ".pdf";
         var doc = new PDFDocument;
         var pageNumber = 1;
         doc.on('pageAdded',
             function () {
                 // Don't forget the reset the font family, size & color if needed
+                doc.fontSize(8)
+                doc.text(title,10, 10, { align: 'left'});
+                doc.fontSize(14)
                 doc.text(++pageNumber, 0.5 * (doc.page.width - 100), 40, {width: 100, align: 'center'});
             }
         );
@@ -306,8 +321,11 @@ var scoreSplitter = {
 
         for (var i = 0; i < pagesImagesArray.length; i++) {
             doc.image(pagesImagesArray[i], 0, 50)
-            if (i == 0)
-                doc.text(title, 0.5 * (doc.page.width - 300), 70, {width: 300, align: 'center'});
+            if (i == 0) {
+                doc.fontSize(14);
+                doc.text(title, (0.5 * doc.page.width) - 200, 30, {width: 400, align: 'center'});
+            }
+
             doc.addPage();
 
         }

@@ -45,7 +45,7 @@ scoreD3 = (function () {
                mouseClip.x2 = 592;
                mouseClip.y2 = y + (zoneHeight / 2);
                mouseClip.y1 = y - (zoneHeight / 2);
-               self.drawRect(mouseClip, "Z", label);
+               self.drawZoneRect(mouseClip, "Z", label);
            }
        }
 
@@ -75,7 +75,7 @@ scoreD3 = (function () {
                 mouseClip.x2=590;
                 mouseClip.y2= mouseClip.y1+(zoneHeight/2);
                 mouseClip.y1=mouseClip.y1-(zoneHeight/2);
-                self.drawRect(mouseClip, "Z", label);
+                self.drawZoneRect(mouseClip, "Z", label);
 
             }
 
@@ -107,7 +107,7 @@ scoreD3 = (function () {
 
     }
 
-    self.drawRect = function (clipRect, type, label) {
+    self.drawZoneRect = function (clipRect, type, label) {
         var id = label;
         zoneData = [{
             label: label,

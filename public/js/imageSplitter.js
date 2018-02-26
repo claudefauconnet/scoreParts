@@ -111,7 +111,7 @@ function drawImage(name) {
 		var label = "p" + currentPage + "z" + currentZoneInPage;
 		if (label && label.length > 0) {
 
-			drawRect(mouseClip, "Z", label);
+			drawZoneRect(mouseClip, "Z", label);
 			/*
 			 * var e = d3.event; if (!aDiv) { } else{ moveRect(mouseClip); }
 			 */
@@ -146,7 +146,7 @@ function drawImage(name) {
 }
 
 // **************************DragRect************************
-function drawRect(clipRect, type, label) {
+function drawZoneRect(clipRect, type, label) {
 	
 
 	id = label;
@@ -338,7 +338,7 @@ function nextPage() {
 	var name = $('#fileName').val() + (currentPage);
 	// drawImage(name);
 	updateImage("data/" + name + ".jpg");
-	// drawRect(mouseClip, "Z", name);
+	// drawZoneRect(mouseClip, "Z", name);
 	$("#page").html("" + currentPage);
 
 }
@@ -347,7 +347,7 @@ function previousPage() {
 	var name = $('#fileName').val() + (currentPage);
 	// drawImage(name);
 	updateImage("data/" + name + ".jpg");
-	// drawRect(mouseClip, "Z", name);
+	// drawZoneRect(mouseClip, "Z", name);
 	$("#page").html("" + currentPage);
 
 }

@@ -1,6 +1,6 @@
 var scoreParts = (function () {
     var self = {};
-    var imagesDir = "./images/";
+    var imagesDir = "./data/images/";
 
 
     self.listScores = function () {
@@ -30,7 +30,7 @@ var scoreParts = (function () {
     }
     self.openFirstPdfPage = function () {
         var name = $('#scoresSelect').val();
-        $("#fileName").val(name);
+        $("#scoresSelect").val(name);
         if (name == "")
             return;
         var name2 = imagesDir + name + "-1.png";
@@ -52,10 +52,12 @@ var scoreParts = (function () {
     self.nextPage = function () {
         currentPage += 1;
         currentZoneInPage = 0;
-        var name = $('#fileName').val() + "-" + (currentPage);
+        var name = $('#scoresSelect').val() + "-" + (currentPage);
         // drawImage(name);
         self.updateImage(imagesDir + name + ".png");
         $("#page").html("" + currentPage);
+
+        $("#duplicateZonesButton").css("visibility","visible");
 
     }
     self.previousPage = function () {
@@ -64,9 +66,10 @@ var scoreParts = (function () {
         currentPage -= 1;
 
         currentZoneInPage = 0;
-        var name = $('#fileName').val() + "-" + (currentPage);
+        var name = $('#scoresSelect').val() + "-" + (currentPage);
         self.updateImage(imagesDir + name + ".png");
         $("#page").html("" + currentPage);
+        $("#duplicateZonesButton").css("visibility","visible");
 
     }
 
@@ -78,9 +81,13 @@ var scoreParts = (function () {
             return;
         self.setMessage("  La partie est en cours de génération , Attendez...", " blue");
         $('body').css("cursor", "progress");
-        var pdfName = $('#fileName').val();
+        var pdfName = $('#scoresSelect').val();
 
-        var zonesStr=JSON.stringify(scoreD3.pagesZoneData);
+
+
+      var  orderedZones= self.getOrderedZones();
+
+        var zonesStr=JSON.stringify(orderedZones);
         var payload = {
             generatePart: 1,
             part: part,
@@ -93,13 +100,18 @@ var scoreParts = (function () {
             data: payload,
             dataType: "json",
             success: function (data, textStatus, jqXHR) {
-                $("#resultDiv").html("<button onclick='hideResultDiv()')>Fermer</button>Privisualisation de la première page ...<button onclick='downloadScore()')>telechargez le pfd</button><BR><BR><img src='" + data.result + "' width='" + 600 + "' />");
+
+
+                $("#duplicateZonesButton2").css("visibility","visible");
+
+
+          /*      $("#resultDiv").html("<button onclick='hideResultDiv()')>Fermer</button>Privisualisation de la première page ...<button onclick='downloadScore()')>telechargez le pfd</button><BR><BR><img src='" + data.result + "' width='" + 600 + "' />");
                 $("#resultDiv").css("visibility", "visible");
                 self.setMessage("  La partie est générée.", " green");
                 $('body').css('cursor', 'default');
             }, error: function (jqXHR, textStatus) {
                 alert("Request failed: " + textStatus);
-                self.setMessage("  Erreur dans la génération de la partie.", " red");
+                self.setMessage("  Erreur dans la génération de la partie.", " red");*/
                 $('body').css('cursor', 'default');
 
 
@@ -108,27 +120,113 @@ var scoreParts = (function () {
 
 
     }
-    self.downloadScore = function () {
-        var url = "data/" + downoladFileName;
 
-        window.open(url, downoladFileName, "height=1300");
-    }
-    self.setMessage = function (str) {
-        $("#message").html(str);
-    }
-    self.hideResultDiv = function () {
-        $("#resultDiv").css("visibility", "hidden");
+
+    /***
+     *
+     * rearrange zoneIndex in each zone according to y
+     *
+     */
+    self.getOrderedZones=function(){
+        var pdfName = $('#scoresSelect').val();
+        var orderedZones=[];
+        for(var key in scoreD3.pagesZoneData){
+            var zone=scoreD3.pagesZoneData[key];
+            orderedZones.push({yIndex:((zone.page*1000)+zone.y),zone:zone})
+
+        }
+            orderedZones.sort(function (a,b){
+                if(a.yIndex>b.yIndex)
+                    return 1;
+                if(a.yIndex<b.yIndex)
+                    return-1;
+                return 0;
+
+            });
+        var currentPage="";
+        var zoneIndex=0;
+        var orderedZones2=[]
+        for(var i=0;i<orderedZones.length;i++){
+            var page= orderedZones[i].zone.page;
+            if(page!=currentPage){
+                currentPage=page;
+                zoneIndex=0
+            }
+            else
+                zoneIndex+=1;
+            var zone= orderedZones[i].zone;
+            zone.zoneIndex=zoneIndex;
+            zone.pdfName=pdfName
+            orderedZones2.push(zone)
+
+
+        }
+        return orderedZones2;
+
+
     }
 
-    self.clearZones = function () {
-        d3.select("svg").selectAll(".clipZone").remove();
-        scoreD3.pagesZoneData = {};
-        currentPage = 1;
-        var name = $('#fileName').val() + "-" + (currentPage);
-        currentZoneInPage = 0;
-        self.updateImage(imagesDir + name + ".png");
+
+
+
+
+    self.repeatZonesFromPreviousPage=function(button){// from previous page
+
+
+        var newZones=[];
+        for(var key in scoreD3.pagesZoneData) {
+
+            var zone = scoreD3.pagesZoneData[key];
+            if (zone.page == currentPage - 1) {
+                var newZone = jQuery.extend(true, {}, zone);//clone
+                var zoneId = "p" + (zone.page + 1) + "z" + zone.zoneIndex;
+                newZone.label = zoneId;
+                newZone.divId = zoneId;
+                newZone.page = currentPage;
+                newZones.push(newZone);
+
+            }
+        }
+            for(var i=0;i<newZones.length;i++){
+                scoreD3.pagesZoneData[newZones[i].divId] =newZones[i];
+
+            }
+            scoreD3.drawZoneRect (newZones);
+        $(button).css("visibility","hidden");
+
+
+
+
+    }
+    self.repeatZonesFromPreviousPart=function(button) {
+
+
+        var newZones = [];
+        for (var key in scoreD3.pagesZoneData) {
+
+            var zone = scoreD3.pagesZoneData[key];
+            if (zone.page == currentPage) {
+                zones.push(zone);
+
+            }
+        }
+
+        scoreD3.drawZoneRect(zones);
+        $(button).css("visibility", "hidden");
     }
 
+
+
+        self.setMessage=function(message,color){
+
+        if(!color) {
+            color="black";
+        }
+            $("#message").css("color",color);
+        $("#message").html(message);
+
+
+    }
 
     return self;
 
