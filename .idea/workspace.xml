@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="cd007939-7fbd-4eae-9504-25a4facc9d1a" name="Default" comment="">
-      <change beforePath="" afterPath="$PROJECT_DIR$/public/data/redMe.txt" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -36,17 +37,17 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name=".gitignore" pinned="false" current-in-tab="false">
+      <file leaf-file-name=".gitignore" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/.gitignore">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="906">
-              <caret line="61" column="5" lean-forward="true" selection-start-line="61" selection-start-column="5" selection-end-line="61" selection-end-column="5" />
+            <state relative-caret-position="405">
+              <caret line="15" column="0" lean-forward="true" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="redMe.txt" pinned="false" current-in-tab="true">
+      <file leaf-file-name="redMe.txt" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/public/data/redMe.txt">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="0">
@@ -367,12 +368,12 @@
       <workItem from="1519654823076" duration="7041000" />
       <workItem from="1519738966244" duration="595000" />
       <workItem from="1520009721942" duration="16417000" />
-      <workItem from="1520075757083" duration="7451000" />
+      <workItem from="1520075757083" duration="7605000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="125882000" />
+    <option name="totallyTimeSpent" value="126036000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-11" y="-11" width="2902" height="1570" extended-state="6" />
@@ -738,18 +739,18 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/.gitignore">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="906">
-          <caret line="61" column="5" lean-forward="true" selection-start-line="61" selection-start-column="5" selection-end-line="61" selection-end-column="5" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/public/data/redMe.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="405">
+          <caret line="15" column="0" lean-forward="true" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
           <folding />
         </state>
       </provider>
