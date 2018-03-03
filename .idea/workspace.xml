@@ -2,8 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="cd007939-7fbd-4eae-9504-25a4facc9d1a" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/public/data/pdfs/readMe.txt" afterPath="$PROJECT_DIR$/public/data/pdfs/readMe.txt" />
-      <change beforePath="$PROJECT_DIR$/public/data/redMe.txt" afterPath="$PROJECT_DIR$/public/data/redMe.txt" />
+      <change beforePath="" afterPath="$PROJECT_DIR$/data/pdf/readMe.txt" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -17,16 +16,6 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="scoreSplitter..js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/bin/scoreSplitter..js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="367">
-              <caret line="126" column="23" lean-forward="false" selection-start-line="126" selection-start-column="23" selection-end-line="126" selection-end-column="23" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="scoreParts.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/public/js/scoreParts.js">
           <provider selected="true" editor-type-id="text-editor">
@@ -47,11 +36,21 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="redMe.txt" pinned="false" current-in-tab="true">
+      <file leaf-file-name="redMe.txt" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/public/data/redMe.txt">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="0">
               <caret line="0" column="17" lean-forward="false" selection-start-line="0" selection-start-column="17" selection-end-line="0" selection-end-column="17" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="readMe.txt" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/data/pdf/readMe.txt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="0">
+              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -246,6 +245,17 @@
             <path>
               <item name="scoreparts" type="b2602c69:ProjectViewProjectNode" />
               <item name="scoreparts" type="462c0819:PsiDirectoryNode" />
+              <item name="data" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="scoreparts" type="b2602c69:ProjectViewProjectNode" />
+              <item name="scoreparts" type="462c0819:PsiDirectoryNode" />
+              <item name="data" type="462c0819:PsiDirectoryNode" />
+              <item name="pdf" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="scoreparts" type="b2602c69:ProjectViewProjectNode" />
+              <item name="scoreparts" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -315,11 +325,11 @@
       <recent name="D:\GitHub\scoreparts\data" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\GitHub\scoreparts\data\pdf" />
       <recent name="D:\GitHub\scoreparts\public\images" />
       <recent name="D:\GitHub\scoreparts\java" />
       <recent name="D:\GitHub\scoreparts\public" />
       <recent name="D:\GitHub\scoreparts\bin" />
-      <recent name="D:\GitHub\scoreparts\public\js" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -370,12 +380,12 @@
       <workItem from="1519654823076" duration="7041000" />
       <workItem from="1519738966244" duration="595000" />
       <workItem from="1520009721942" duration="16417000" />
-      <workItem from="1520075757083" duration="7690000" />
+      <workItem from="1520075757083" duration="7787000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="126121000" />
+    <option name="totallyTimeSpent" value="126218000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-11" y="-11" width="2902" height="1570" extended-state="6" />
@@ -626,7 +636,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/data/pdf/readme.txt" />
     <entry file="file://$PROJECT_DIR$/data/png/raw/readme.txt" />
     <entry file="file://$PROJECT_DIR$/bin/www">
       <provider selected="true" editor-type-id="text-editor">
@@ -753,6 +762,14 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="17" lean-forward="false" selection-start-line="0" selection-start-column="17" selection-end-line="0" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/data/pdf/readMe.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
       </provider>
