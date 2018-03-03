@@ -31,7 +31,7 @@
 
     <style>
         body {
-            font-family: sans-serif;
+            font-family: Verdana, Arial, sans-serif;
         }
 
         tr {
@@ -43,11 +43,13 @@
 
         button {
             margin: 10px;
+            font-size: 14px;
+            font-weight:normal ;
         }
 
         #imageSplitterDiv {
             top: 50px;
-            left: 300px;
+            left: 400px;
             position: absolute;
             width: 592px;
         }
@@ -58,17 +60,7 @@
             position: absolute;
         }
 
-        #resultDiv {
-            top: 130px;
-            position: absolute;
-            width: 600px;
-            height: 900px;
-            visibility: hidden;
-            border-width: 3px;
-            border-color: gray;
-            border-style: groove;
-            background-color: gray;
-        }
+
 
         .dragRect {
             border-width: 1px;
@@ -104,13 +96,15 @@
             font-size: 14px;
             font-style: italic;
             color: black;
-            width:300px;
+            width:350px;
+            height: 200px;
+            overflow: auto;
 
         }
 
         .buttonImportant {
-            margin: 5px;
-            background-color: red;
+
+            background-color: dimgrey;
         }
 
 
@@ -138,6 +132,7 @@ var  currentZoneInPage = 0;
 <table>
     <tr>
         <td>
+            <input type="image" onclick='scoreParts.getInfos()' width="20px" src="images/infos.png">
             Ouvrir partition : <select id="scoresSelect" onchange="scoreParts.openFirstPdfPage()">
             <option>&nbsp;</option>
         </select>
@@ -170,7 +165,7 @@ var  currentZoneInPage = 0;
 
 <div id="controlPanelDiv" style="visibility: hidden">
     <td><img src="images/waitAnimated.gif" id="waitImg" width="20px" style="visibility: hidden" ></td>
-    <span id="message"></span>
+    <div id="message"></div>
     <table>
         <tr>
             <td>
@@ -209,8 +204,8 @@ var  currentZoneInPage = 0;
         </tr>
         <tr>
             <td>
-                <button class="buttonImportant" onclick="scoreParts.generateInstrumentScore()">Générer pdf
-                    partie
+                <button class="buttonImportant" onclick="scoreParts.generateInstrumentScore()">Générer voix (pdf)
+
                 </button>
             </td>
         </tr>

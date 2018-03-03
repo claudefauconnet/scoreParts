@@ -36,8 +36,9 @@ var scoreParts = (function () {
         var name2 = imagesDir + name + "-1.png";
         scoreD3.drawImage(name2);
         currentPage = 1;
-        $("#page").html("" + currentPage);
+        $("#page").html(" " + currentPage);
         $('#controlPanelDiv').css('visibility', 'visible');
+        self.setMessage("cliquez au milieu des portées pour decouper une voix ","blue")
 
     }
 
@@ -57,7 +58,7 @@ var scoreParts = (function () {
         var name = $('#scoresSelect').val() + "-" + (currentPage);
         // drawImage(name);
         self.updateImage(imagesDir + name + ".png");
-        $("#page").html("" + currentPage);
+        $("#page").html(" " + currentPage);
 
         $("#duplicateZonesButton").css("visibility", "visible");
 
@@ -70,7 +71,7 @@ var scoreParts = (function () {
         currentZoneInPage = 0;
         var name = $('#scoresSelect').val() + "-" + (currentPage);
         self.updateImage(imagesDir + name + ".png");
-        $("#page").html("" + currentPage);
+        $("#page").html(" " + currentPage);
         $("#duplicateZonesButton").css("visibility", "visible");
 
     }
@@ -268,6 +269,12 @@ var scoreParts = (function () {
         }
         $("#message").css("color", color);
         $("#message").html(message);
+
+
+    }
+    self.getInfos=function(){
+        $("#message").css("visibility","visible");
+        self.setMessage("logiciel open source de découpage de partition sous licence MIT <br><a href='mailto://claude.fauconnet@neuf.fr'>Claude Fauconnet</a><br><a href='https://github.com/claudefauconnet/scoreparts'>Source</a>");
 
 
     }
