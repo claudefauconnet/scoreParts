@@ -23,7 +23,7 @@ var scoreParts = (function () {
                 ;
 
             }, error: function (err) {
-                console.lpg(err);
+                console.log(err);
             }
         });
 
@@ -263,7 +263,7 @@ var scoreParts = (function () {
 
 
     self.setMessage = function (message, color) {
-
+        $("#message").css("visibility","visible");
         if (!color) {
             color = "black";
         }
@@ -273,7 +273,7 @@ var scoreParts = (function () {
 
     }
     self.getInfos=function(){
-        $("#message").css("visibility","visible");
+
         self.setMessage("logiciel open source de découpage de partition sous licence MIT <br><a href='mailto://claude.fauconnet@neuf.fr'>Claude Fauconnet</a><br><a href='https://github.com/claudefauconnet/scoreparts'>Source</a>");
 
 

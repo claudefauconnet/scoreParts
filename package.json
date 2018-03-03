@@ -16,7 +16,9 @@
     "pdf-image": "latest",
     "async": "latest",
     "serve-favicon": "~2.4.5",
-    "multer": "latest"
+    "multer": "latest",
+    "pdfkit": "latest"
+
   },
   "description": "score scrapper",
   "main": "app.js",

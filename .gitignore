@@ -59,8 +59,10 @@ typings/
 
 *.pdf
 *.png
+!infos.png
 *.json
-public/js/d3/d3.js
-public/js/Copy of imageSplitter.js
-public/js/jquery/external/jquery/jquery.js
-*.jar
+
+
+*.xml
+.idea/workspace.xml
+scoreParts/

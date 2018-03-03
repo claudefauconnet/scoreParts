@@ -11,7 +11,7 @@ router.get('/', function (req, res, next) {
 router.post('/upload', function (req, response) {
     fileUpload.upload(req,"pdfFile", function (error, file) {
         if (error) {
-            return processResponse(response, error, result);
+            return processResponse(response, error);
         }
         if (!file || !file.path) {
             return processResponse(response, "wrong file", null);
