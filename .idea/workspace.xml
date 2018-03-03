@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="cd007939-7fbd-4eae-9504-25a4facc9d1a" name="Default" comment="">
-      <change beforePath="" afterPath="$PROJECT_DIR$/data/readMe.txt" />
-      <change beforePath="$PROJECT_DIR$/data/pdf/readMe.txt" afterPath="$PROJECT_DIR$/data/pdf/readMe.txt" />
+      <change beforePath="$PROJECT_DIR$/public/index.html" afterPath="$PROJECT_DIR$/public/index.html" />
+      <change beforePath="$PROJECT_DIR$/public/js/scoreParts.js" afterPath="$PROJECT_DIR$/public/js/scoreParts.js" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -17,11 +17,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="scoreParts.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="scoreParts.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/public/js/scoreParts.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="280">
-              <caret line="254" column="9" lean-forward="true" selection-start-line="254" selection-start-column="9" selection-end-line="254" selection-end-column="9" />
+              <caret line="77" column="0" lean-forward="true" selection-start-line="77" selection-start-column="0" selection-end-line="77" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -32,6 +32,16 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="405">
               <caret line="15" column="0" lean-forward="true" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="scoreD3.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/public/js/scoreD3.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1161">
+              <caret line="151" column="35" lean-forward="false" selection-start-line="151" selection-start-column="29" selection-end-line="151" selection-end-column="35" />
               <folding />
             </state>
           </provider>
@@ -57,7 +67,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="readMe.txt" pinned="false" current-in-tab="true">
+      <file leaf-file-name="readMe.txt" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/data/readMe.txt">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="0">
@@ -90,23 +100,13 @@
       <file leaf-file-name="index.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/public/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="652">
-              <caret line="129" column="0" lean-forward="false" selection-start-line="129" selection-start-column="0" selection-end-line="129" selection-end-column="0" />
+            <state relative-caret-position="1306">
+              <caret line="148" column="52" lean-forward="false" selection-start-line="148" selection-start-column="45" selection-end-line="148" selection-end-column="52" />
               <folding>
                 <element signature="n#style#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#img#0;n#td#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#button#1;n#td#0;n#tr#2;n#table#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="fileUpload.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/bin/fileUpload.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="578">
-              <caret line="58" column="39" lean-forward="false" selection-start-line="58" selection-start-column="36" selection-end-line="58" selection-end-column="39" />
-              <folding />
             </state>
           </provider>
         </entry>
@@ -160,10 +160,10 @@
       <find>mouse</find>
       <find>jar</find>
       <find>time2-time</find>
-      <find>message</find>
       <find>package</find>
       <find>#page</find>
       <find>ign</find>
+      <find>message</find>
     </findStrings>
     <replaceStrings>
       <replace>scoreD3.pagesZoneData</replace>
@@ -191,13 +191,13 @@
         <option value="$PROJECT_DIR$/bin/scoreSplitter..js" />
         <option value="$PROJECT_DIR$/public/js/scoreD3.js" />
         <option value="$PROJECT_DIR$/routes/index.js" />
-        <option value="$PROJECT_DIR$/public/js/scoreParts.js" />
-        <option value="$PROJECT_DIR$/public/index.html" />
         <option value="$PROJECT_DIR$/package.json" />
         <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/public/data/pdfs/readMe.txt" />
         <option value="$PROJECT_DIR$/public/data/redMe.txt" />
         <option value="$PROJECT_DIR$/data/pdf/readMe.txt" />
+        <option value="$PROJECT_DIR$/public/index.html" />
+        <option value="$PROJECT_DIR$/public/js/scoreParts.js" />
       </list>
     </option>
   </component>
@@ -258,19 +258,6 @@
               <item name="scoreparts" type="b2602c69:ProjectViewProjectNode" />
               <item name="scoreparts" type="462c0819:PsiDirectoryNode" />
               <item name="public" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="scoreparts" type="b2602c69:ProjectViewProjectNode" />
-              <item name="scoreparts" type="462c0819:PsiDirectoryNode" />
-              <item name="public" type="462c0819:PsiDirectoryNode" />
-              <item name="data" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="scoreparts" type="b2602c69:ProjectViewProjectNode" />
-              <item name="scoreparts" type="462c0819:PsiDirectoryNode" />
-              <item name="public" type="462c0819:PsiDirectoryNode" />
-              <item name="data" type="462c0819:PsiDirectoryNode" />
-              <item name="pdfs" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="scoreparts" type="b2602c69:ProjectViewProjectNode" />
@@ -376,12 +363,12 @@
       <workItem from="1519654823076" duration="7041000" />
       <workItem from="1519738966244" duration="595000" />
       <workItem from="1520009721942" duration="16417000" />
-      <workItem from="1520075757083" duration="7866000" />
+      <workItem from="1520075757083" duration="8750000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="126297000" />
+    <option name="totallyTimeSpent" value="127181000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-11" y="-11" width="2902" height="1570" extended-state="6" />
@@ -679,14 +666,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/public/js/scoreD3.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="81">
-          <caret line="3" column="26" lean-forward="false" selection-start-line="3" selection-start-column="13" selection-end-line="3" selection-end-column="26" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/bin/fileUpload.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="578">
@@ -695,30 +674,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/public/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="652">
-          <caret line="129" column="0" lean-forward="false" selection-start-line="129" selection-start-column="0" selection-end-line="129" selection-end-column="0" />
-          <folding>
-            <element signature="n#style#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#img#0;n#td#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#button#1;n#td#0;n#tr#2;n#table#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/package.json">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="378">
           <caret line="14" column="23" lean-forward="true" selection-start-line="14" selection-start-column="23" selection-end-line="14" selection-end-column="23" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/public/js/scoreParts.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="280">
-          <caret line="254" column="9" lean-forward="true" selection-start-line="254" selection-start-column="9" selection-end-line="254" selection-end-column="9" />
           <folding />
         </state>
       </provider>
@@ -767,6 +726,34 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="18" lean-forward="true" selection-start-line="0" selection-start-column="18" selection-end-line="0" selection-end-column="18" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/js/scoreD3.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1161">
+          <caret line="151" column="35" lean-forward="false" selection-start-line="151" selection-start-column="29" selection-end-line="151" selection-end-column="35" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1306">
+          <caret line="148" column="52" lean-forward="false" selection-start-line="148" selection-start-column="45" selection-end-line="148" selection-end-column="52" />
+          <folding>
+            <element signature="n#style#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#img#0;n#td#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#button#1;n#td#0;n#tr#2;n#table#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/js/scoreParts.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="280">
+          <caret line="77" column="0" lean-forward="true" selection-start-line="77" selection-start-column="0" selection-end-line="77" selection-end-column="0" />
           <folding />
         </state>
       </provider>

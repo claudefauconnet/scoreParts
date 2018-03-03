@@ -78,6 +78,7 @@ var scoreParts = (function () {
 
     self.uploadFormData= function () {
         $('#controlPanelDiv').css('visibility', 'hidden');
+        $("#pdfFile").value="";
         var form = $("#uploadForm")[0]
         var formData = new FormData(form);
         $("#waitImg").css("visibility","visible");
