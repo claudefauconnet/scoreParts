@@ -38,26 +38,28 @@ var scoreSplitter = {
 
 
 
-    pdfToImages: function (pdfName, callback) {
+    pdfToImages: function (pdfPath, callback) {
 
      //   var jarPath = path.resolve(__dirname, "../java/pdfbox-app-2.0.8.jar");
         var jarPath = path.resolve(__dirname, "../java/pdf2images.jar");
-        var pdfPath = pdfName;//path.resolve(__dirname, "../data/pdf/" + pdfName);
+        var  pdfName=path.basename(pdfPath)
+
+        var time=new Date();
+        var time0=time;
+        pdfName=pdfName.substring(0,pdfName.lastIndexOf('.'));
         var outputPrefix = pdfPath.substring(0, pdfPath.lastIndexOf(".")) + "-";
       //  outputPrefix = path.resolve(outputPrefix.replace(/data[\/\\]pdf/g, scoreSplitter.rawImagesDir));
         var cmd = "java -jar " +jarPath+" "+ pdfPath;
     //    var cmd = "java -jar " + jarPath + " PDFToImage -outputPrefix " + outputPrefix + " -imageType  png " + pdfPath
         console.log("EXECUTING " + cmd)
         exec(cmd, function (err, stdout, stderr) {
-            if (err)
-                return callback(err);
-           /* if (stderr && stderr != "") {
+            if (err) {
                 console.log(stderr);
-                return callback(stderr);
-
-
-            }*/
-            console.log(stderr);
+                return callback(err);
+            }
+            var time2=new Date()
+            console.log("extract images form pdf took : "+time2-time);
+            time=time2;
             console.log(stdout);
             var i = 1;
             var stop = false;
@@ -78,13 +80,23 @@ var scoreSplitter = {
                         if (err) {
                             console.log(err);
                             return callbackEachImg(err);
+
                         }
+                        var time2=new Date()
+                        console.log("readImage took : "+((time2-time)));
+                        time=time2
                     image.resize(scoreSplitter.pageWidth,scoreSplitter.pageHeight);
+                        var time2=new Date()
+                        console.log("resize took : "+(time2-time));
+                        time=time2
                         var imageName=path.basename(imgPath);
 
                         var imgPathResized = path.resolve(__dirname,scoreSplitter.resizedImagesDir+imageName);
 
                         image.write(imgPathResized);
+                        var time2=new Date()
+                        console.log("write image took : "+(time2-time));
+                        time=time2
                         callbackEachImg()
                     });
                 }, function (err) {//end eachSeries
@@ -98,11 +110,22 @@ var scoreSplitter = {
                            return callbackEachImg2(e);
                         }
                         callbackEachImg2();
+
                     }, function (err) {
-                        if (err)
+                        if (err) {
                             return callback(err);
+
+                        }
+                            var time2 = new Date()
+                            console.log("destroy images took : " + (time2 - time));
+                            time = time2
+
+                            var time2 = new Date()
+                            console.log("Allimport  took : " + (time2 - time0));
+
+
                         console.log("done images :" + imgPathes.length);
-                        callback("done images :" + imgPathes.length);
+                        callback(null,{pages:imgPathes.length, pdfName:pdfName, duration:(time2-time0)});
 
                     })
                 }
@@ -325,7 +348,7 @@ var scoreSplitter = {
                return  callback("fichier existant et ouvert impossible d'enrgistrer le nouveau fichier");
             }
         }
-        var partPdfUrl = "/data/images" + pdfName + "-" + part + ".pdf";
+        var partPdfUrl = "data/pdfs/" + pdfName + "-" + part + ".pdf";
         var doc = new PDFDocument;
         var pageNumber = 1;
         doc.on('pageAdded',

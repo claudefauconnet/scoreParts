@@ -37,11 +37,13 @@ var scoreParts = (function () {
         scoreD3.drawImage(name2);
         currentPage = 1;
         $("#page").html("" + currentPage);
-        $('#scrappingCommandsDiv').css('visibility', 'visible');
+        $('#controlPanelDiv').css('visibility', 'visible');
 
     }
 
     self.updateImage = function (link) {
+        scoreD3.clearAllZonesRect();
+        self.drawRectsForPage(currentPage);
         d3.select("svg").selectAll(".clipZone").remove();
         d3.selectAll(".img").attr("xlink:href", function (d) {
             return link;
@@ -57,7 +59,7 @@ var scoreParts = (function () {
         self.updateImage(imagesDir + name + ".png");
         $("#page").html("" + currentPage);
 
-        $("#duplicateZonesButton").css("visibility","visible");
+        $("#duplicateZonesButton").css("visibility", "visible");
 
     }
     self.previousPage = function () {
@@ -69,8 +71,39 @@ var scoreParts = (function () {
         var name = $('#scoresSelect').val() + "-" + (currentPage);
         self.updateImage(imagesDir + name + ".png");
         $("#page").html("" + currentPage);
-        $("#duplicateZonesButton").css("visibility","visible");
+        $("#duplicateZonesButton").css("visibility", "visible");
 
+    }
+
+    self.uploadFormData= function () {
+        $('#controlPanelDiv').css('visibility', 'hidden');
+        var form = $("#uploadForm")[0]
+        var formData = new FormData(form);
+        $("#waitImg").css("visibility","visible");
+        self.setMessage("traitement en cours ...<br>cela peut prendre juqu'à une minute","blue")
+        $.ajax({
+            url: '/upload',
+            data: formData,
+            type: 'POST',
+            contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+)
+            processData: false, // NEEDED, DON'T OMIT THIS
+            success: function (data, textStatus, jqXHR) {
+                $("#waitImg").css("visibility","hidden");
+                self.setMessage("Import terminé " +data.pages+" pages,<br> vous pouvez commencer le découpage","blue")
+                var xx = data;
+                self.listScores();
+                $("#scoresSelect").val(data.pdfName);
+                self.openFirstPdfPage()
+
+            },
+            error: function (err) {
+                $("#waitImg").css("visibility","hidden");
+                self.setMessage("ERREUR lors del'import"+err.responseText,"red")
+                var xx = err;
+
+            }
+
+        });
     }
 
     self.generateInstrumentScore = function () {
@@ -84,37 +117,37 @@ var scoreParts = (function () {
         var pdfName = $('#scoresSelect').val();
 
 
+        var orderedZones = self.getOrderedZones();
 
-      var  orderedZones= self.getOrderedZones();
-
-        var zonesStr=JSON.stringify(orderedZones);
+        var zonesStr = JSON.stringify(orderedZones);
         var payload = {
             generatePart: 1,
             part: part,
             pdfName: pdfName,
             zonesStr: zonesStr
         }
+
+        $("#waitImg").css("visibility","visible");
         $.ajax({
             type: "POST",
             url: "/score",
             data: payload,
             dataType: "json",
             success: function (data, textStatus, jqXHR) {
+                $("#waitImg").css("visibility","hidden");
+
+                $("#duplicateZonesButton2").css("visibility", "visible");
+              self.setMessage("la partition "+part+" est générée , <a target='_blanck' href='"+document.location.href+data.result+"'>télécharger</a>","blue");
 
 
-                $("#duplicateZonesButton2").css("visibility","visible");
 
-
-          /*      $("#resultDiv").html("<button onclick='hideResultDiv()')>Fermer</button>Privisualisation de la première page ...<button onclick='downloadScore()')>telechargez le pfd</button><BR><BR><img src='" + data.result + "' width='" + 600 + "' />");
-                $("#resultDiv").css("visibility", "visible");
-                self.setMessage("  La partie est générée.", " green");
-                $('body').css('cursor', 'default');
-            }, error: function (jqXHR, textStatus) {
-                alert("Request failed: " + textStatus);
-                self.setMessage("  Erreur dans la génération de la partie.", " red");*/
                 $('body').css('cursor', 'default');
 
 
+            },
+            error: function (err) {
+                $("#waitImg").css("visibility","hidden");
+                self.setMessage(err, "red")
             }
         });
 
@@ -127,36 +160,36 @@ var scoreParts = (function () {
      * rearrange zoneIndex in each zone according to y
      *
      */
-    self.getOrderedZones=function(){
+    self.getOrderedZones = function () {
         var pdfName = $('#scoresSelect').val();
-        var orderedZones=[];
-        for(var key in scoreD3.pagesZoneData){
-            var zone=scoreD3.pagesZoneData[key];
-            orderedZones.push({yIndex:((zone.page*1000)+zone.y),zone:zone})
+        var orderedZones = [];
+        for (var key in scoreD3.pagesZoneData) {
+            var zone = scoreD3.pagesZoneData[key];
+            orderedZones.push({yIndex: ((zone.page * 1000) + zone.y), zone: zone})
 
         }
-            orderedZones.sort(function (a,b){
-                if(a.yIndex>b.yIndex)
-                    return 1;
-                if(a.yIndex<b.yIndex)
-                    return-1;
-                return 0;
+        orderedZones.sort(function (a, b) {
+            if (a.yIndex > b.yIndex)
+                return 1;
+            if (a.yIndex < b.yIndex)
+                return -1;
+            return 0;
 
-            });
-        var currentPage="";
-        var zoneIndex=0;
-        var orderedZones2=[]
-        for(var i=0;i<orderedZones.length;i++){
-            var page= orderedZones[i].zone.page;
-            if(page!=currentPage){
-                currentPage=page;
-                zoneIndex=0
+        });
+        var currentPage = "";
+        var zoneIndex = 0;
+        var orderedZones2 = []
+        for (var i = 0; i < orderedZones.length; i++) {
+            var page = orderedZones[i].zone.page;
+            if (page != currentPage) {
+                currentPage = page;
+                zoneIndex = 0
             }
             else
-                zoneIndex+=1;
-            var zone= orderedZones[i].zone;
-            zone.zoneIndex=zoneIndex;
-            zone.pdfName=pdfName
+                zoneIndex += 1;
+            var zone = orderedZones[i].zone;
+            zone.zoneIndex = zoneIndex;
+            zone.pdfName = pdfName
             orderedZones2.push(zone)
 
 
@@ -167,14 +200,11 @@ var scoreParts = (function () {
     }
 
 
+    self.repeatZonesFromPreviousPage = function (button) {// from previous page
 
 
-
-    self.repeatZonesFromPreviousPage=function(button){// from previous page
-
-
-        var newZones=[];
-        for(var key in scoreD3.pagesZoneData) {
+        var newZones = [];
+        for (var key in scoreD3.pagesZoneData) {
 
             var zone = scoreD3.pagesZoneData[key];
             if (zone.page == currentPage - 1) {
@@ -187,18 +217,16 @@ var scoreParts = (function () {
 
             }
         }
-            for(var i=0;i<newZones.length;i++){
-                scoreD3.pagesZoneData[newZones[i].divId] =newZones[i];
+        for (var i = 0; i < newZones.length; i++) {
+            scoreD3.pagesZoneData[newZones[i].divId] = newZones[i];
 
-            }
-            scoreD3.drawZoneRect (newZones);
-        $(button).css("visibility","hidden");
-
-
+        }
+        scoreD3.drawZoneRect(newZones);
+        $(button).css("visibility", "hidden");
 
 
     }
-    self.repeatZonesFromPreviousPart=function(button) {
+    self.repeatZonesFromPreviousPart = function (button) {
 
 
         var zones = [];
@@ -214,15 +242,31 @@ var scoreParts = (function () {
         scoreD3.drawZoneRect(zones);
         $(button).css("visibility", "hidden");
     }
+    self.drawRectsForPage = function (page) {
+        var zones = [];
+        for (var key in scoreD3.pagesZoneData) {
 
+            var zone = scoreD3.pagesZoneData[key];
+            if (zone.page == page) {
+                zones.push(zone);
 
-
-        self.setMessage=function(message,color){
-
-        if(!color) {
-            color="black";
+            }
         }
-            $("#message").css("color",color);
+        if (zones.length > 0)
+            scoreD3.drawZoneRect(zones);
+    }
+    self.startAllOver=function(){
+        scoreD3.deleteAllZones();
+        self.openFirstPdfPage();
+    }
+
+
+    self.setMessage = function (message, color) {
+
+        if (!color) {
+            color = "black";
+        }
+        $("#message").css("color", color);
         $("#message").html(message);
 
 
