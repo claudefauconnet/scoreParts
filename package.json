@@ -18,7 +18,6 @@
     "serve-favicon": "~2.4.5",
     "multer": "latest",
     "pdfkit": "latest"
-
   },
   "description": "score scrapper",
   "main": "app.js",
