@@ -61,7 +61,7 @@ var fileUpload = {
                 callback('Error Occured' + err);
                 return;
             }
-            callback(null, req.file)
+            callback(null, req.file,req.body)
 
         })
 

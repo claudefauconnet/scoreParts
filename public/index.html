@@ -146,7 +146,13 @@ var  currentZoneInPage = 0;
 
 
                 <form enctype="multipart/form-data" id="uploadForm" >
-                    <input type="file" name="pdfFile" onchange="scoreParts.uploadFormData()" >
+
+                    <input type="file" name="pdfFile" id="pdfFileInput" onchange="scoreParts.uploadFormData()" >
+                    Qualite <select name="imageQuality" >
+                        <option value="low">faible</option>
+                        <option value="medium" selected>moyenne</option>
+                        <option value="high">haute</option>
+                    </select>
 
                 </form>
 
@@ -183,7 +189,7 @@ var  currentZoneInPage = 0;
         </tr>
         <tr>
             <td>
-                hauteur zone<input id="zoneHeight" value="55" size="3"> <br>
+                hauteur zone<input id="zoneHeight" value="55" size="3">   marge<input id="zoneMargin" value="15" size="3"> <br>
                 <button onclick="scoreParts.repeatZonesFromPreviousPage(this)" style="visibility: hidden"
                         id="duplicateZonesButton">dupliquer les zones
                 </button>

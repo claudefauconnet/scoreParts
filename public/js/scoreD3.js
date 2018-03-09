@@ -48,8 +48,7 @@ scoreD3 = (function () {
 
             }
 
-
-            var drag = d3.behavior.drag().on("dragstart", function (aaa) {
+   var drag = d3.behavior.drag().on("dragstart", function (aaa) {
                 var x = d3.event.sourceEvent.offsetX;
                 var y = d3.event.sourceEvent.offsetY;
                 mouseClip.x1 = x;
@@ -59,6 +58,7 @@ scoreD3 = (function () {
                 var x = d3.event.sourceEvent.offsetX;
                 var y = d3.event.sourceEvent.offsetY;
                 mouseClip.x2 = x;
+
                 // mouseClip.y2 = mouseClip.y1 + 5;
                 mouseClip.y2 = y;
              //   setMessage("rect :" + JSON.stringify(mouseClip));
@@ -68,19 +68,16 @@ scoreD3 = (function () {
 
                 var label = "p" + currentPage + "z" + currentZoneInPage;
 
-                var h = mouseClip.y2 - mouseClip.y1
-                if (h < 30) {
-                    h = parseInt($("#zoneHeight").val());
-                }
+
+                  var  h = parseInt($("#zoneHeight").val());
+
                 if (label && label.length > 0) {
                     mouseClip.x1 = 0;
                     mouseClip.x2 = imageWidth;
                     mouseClip.y2 = mouseClip.y1 + (h / 2);
                     mouseClip.y1 = mouseClip.y1 - (h / 2);
                     self.addZone(mouseClip, label);
-                    /*
-                     * var e = d3.event; if (!aDiv) { } else{ moveRect(mouseClip); }
-                     */
+
 
                 }
 
@@ -115,14 +112,16 @@ scoreD3 = (function () {
         }
 
         self.addZone = function (clipRect, label) {
+            var zoneHeight=parseInt($("#zoneHeight").val());
+            zoneMargin=parseInt($("#zoneMargin").val());
             var id = label;
             zone = [{
                 label: label,
                 divId: id,
-                x: clipRect.x1,
+                x: clipRect.x1+zoneMargin,
                 y: clipRect.y1,
-                width: clipRect.x2 - clipRect.x1,
-                height: clipRect.y2 - clipRect.y1,
+                width: imageWidth-(2*zoneMargin),
+                height: zoneHeight,
                 page: currentPage,
                 zoneIndex: currentZoneInPage
             }];
@@ -217,7 +216,7 @@ scoreD3 = (function () {
                                     self.pagesZoneData[zoneId].y -= deltaY;
                                     var zoneD3 = d3.select("#" + zoneId);
 
-                                    zoneD3.attr("transform", "translate(" + 0 + "," + self.pagesZoneData[zoneId].y + ")");
+                                    zoneD3.attr("transform", "translate(" +  self.pagesZoneData[zoneId].x + "," + self.pagesZoneData[zoneId].y + ")");
                                 }
                             } while (ok)
 
@@ -226,7 +225,7 @@ scoreD3 = (function () {
                         else {//move only dragged zone
                             self.pagesZoneData[zoneId].y = y;
                             var zoneD3 = d3.select(this);
-                            zoneD3.attr("transform", "translate(" + 0 + "," + y + ")");
+                            zoneD3.attr("transform", "translate(" +  self.pagesZoneData[zoneId].x + "," + y + ")");
 
                         }
                     }

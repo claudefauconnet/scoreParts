@@ -61,6 +61,7 @@ typings/
 *.pdf
 *.png
 !infos.png
+!_blank.png
 *.json
 
 

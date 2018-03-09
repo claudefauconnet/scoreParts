@@ -29,14 +29,15 @@ var scoreParts = (function () {
 
     }
     self.openFirstPdfPage = function () {
+        scoreD3.deleteAllZones();
         var name = $('#scoresSelect').val();
         $("#scoresSelect").val(name);
         if (name == "")
             return;
-        var name2 = imagesDir + name + "-1.png";
+        var name2 = imagesDir + name + "-0.png";
         scoreD3.drawImage(name2);
-        currentPage = 1;
-        $("#page").html(" " + currentPage);
+        currentPage = 0;
+        $("#page").html(" " + (currentPage+1));
         $('#controlPanelDiv').css('visibility', 'visible');
         self.setMessage("cliquez au milieu des portées pour decouper une voix ","blue")
 
@@ -58,7 +59,7 @@ var scoreParts = (function () {
         var name = $('#scoresSelect').val() + "-" + (currentPage);
         // drawImage(name);
         self.updateImage(imagesDir + name + ".png");
-        $("#page").html(" " + currentPage);
+        $("#page").html(" " + (currentPage+1));
 
         $("#duplicateZonesButton").css("visibility", "visible");
 
@@ -71,18 +72,18 @@ var scoreParts = (function () {
         currentZoneInPage = 0;
         var name = $('#scoresSelect').val() + "-" + (currentPage);
         self.updateImage(imagesDir + name + ".png");
-        $("#page").html(" " + currentPage);
+        $("#page").html(" " + (currentPage+1));
         $("#duplicateZonesButton").css("visibility", "visible");
 
     }
 
     self.uploadFormData= function () {
         $('#controlPanelDiv').css('visibility', 'hidden');
-        $("#pdfFile").value="";
+       // $("#pdfFile").value="";
         var form = $("#uploadForm")[0]
         var formData = new FormData(form);
         $("#waitImg").css("visibility","visible");
-        self.setMessage("traitement en cours ...<br>cela peut prendre juqu'à une minute","blue")
+        self.setMessage("import en cours <br>cela peut prendre plusieurs minutes, <br>merci de patientez ...","blue")
         $.ajax({
             url: '/upload',
             data: formData,
@@ -91,16 +92,20 @@ var scoreParts = (function () {
             processData: false, // NEEDED, DON'T OMIT THIS
             success: function (data, textStatus, jqXHR) {
                 $("#waitImg").css("visibility","hidden");
-                self.setMessage("Import terminé " +data.pages+" pages,<br> vous pouvez commencer le découpage","blue")
+                var durationStr="durée :"+Math.round(data.duration/1000)+ "sec."
+                self.setMessage("Import terminé " +durationStr+" pages,<br> vous pouvez commencer le découpage","blue")
                 var xx = data;
                 self.listScores();
                 $("#scoresSelect").val(data.pdfName);
-                self.openFirstPdfPage()
+                self.openFirstPdfPage();
+                document.getElementById("pdfFileInput").value = "";
 
             },
             error: function (err) {
                 $("#waitImg").css("visibility","hidden");
                 self.setMessage("ERREUR lors del'import"+err.responseText,"red")
+                document.getElementById("pdfFileInput").value = "";
+
                 var xx = err;
 
             }
@@ -114,7 +119,7 @@ var scoreParts = (function () {
         var part = prompt("nom de la partie");
         if (!part || part == "")
             return;
-        self.setMessage("  La partie est en cours de génération , Attendez...", " blue");
+        self.setMessage("  La partie est en cours de génération , merci de patientez ...", " blue");
         $('body').css("cursor", "progress");
         var pdfName = $('#scoresSelect').val();
 
