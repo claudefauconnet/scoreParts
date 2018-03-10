@@ -2,14 +2,14 @@ var scoreParts = (function () {
     var self = {};
     var imagesDir = "./data/images/";
 
-
+var xxx=window.document.location
     self.listScores = function () {
         var payload = {
             listScores: 1
         }
         $.ajax({
             type: "POST",
-            url: "/score",
+            url: "./score",
             data: payload,
             dataType: "json",
             success: function (data, textStatus, jqXHR) {
@@ -28,7 +28,7 @@ var scoreParts = (function () {
         });
 
     }
-    self.openFirstPdfPage = function () {
+    self.openFirstPdfPage = function (message) {
         scoreD3.deleteAllZones();
         var name = $('#scoresSelect').val();
         $("#scoresSelect").val(name);
@@ -37,9 +37,15 @@ var scoreParts = (function () {
         var name2 = imagesDir + name + "-0.png";
         scoreD3.drawImage(name2);
         currentPage = 0;
-        $("#page").html(" " + (currentPage+1));
+        $("#page").html(" " + (currentPage + 1));
         $('#controlPanelDiv').css('visibility', 'visible');
-        self.setMessage("cliquez au milieu des portées pour decouper une voix ","blue")
+        if( !message)
+            message="";
+       message=+"<ul> <li>pour créer une zone : clic sur le milieu d'une portée</li>";
+        message+="<li>pour effacer une zone : clic+Alt sur la zone</li>";
+        message+="<li>pour déplacer une zone : glisser sur la zone avec la souris</li>";
+        message+="<li>pour déplacer toutes les zones d'une page  : clic+Ctl sur une zone</li><ul> ";
+      self.setMessage("cliquez au milieu des portées pour decouper une voix ", "blue")
 
     }
 
@@ -59,7 +65,7 @@ var scoreParts = (function () {
         var name = $('#scoresSelect').val() + "-" + (currentPage);
         // drawImage(name);
         self.updateImage(imagesDir + name + ".png");
-        $("#page").html(" " + (currentPage+1));
+        $("#page").html(" " + (currentPage + 1));
 
         $("#duplicateZonesButton").css("visibility", "visible");
 
@@ -72,38 +78,40 @@ var scoreParts = (function () {
         currentZoneInPage = 0;
         var name = $('#scoresSelect').val() + "-" + (currentPage);
         self.updateImage(imagesDir + name + ".png");
-        $("#page").html(" " + (currentPage+1));
+        $("#page").html(" " + (currentPage + 1));
         $("#duplicateZonesButton").css("visibility", "visible");
 
     }
 
-    self.uploadFormData= function () {
+    self.uploadFormData = function () {
         $('#controlPanelDiv').css('visibility', 'hidden');
-       // $("#pdfFile").value="";
+        // $("#pdfFile").value="";
         var form = $("#uploadForm")[0]
         var formData = new FormData(form);
-        $("#waitImg").css("visibility","visible");
-        self.setMessage("import en cours <br>cela peut prendre plusieurs minutes, <br>merci de patientez ...","blue")
+        $("#waitImg").css("visibility", "visible");
+        self.setMessage("import en cours <br>cela peut prendre plusieurs minutes, <br>merci de patientez ...", "blue")
         $.ajax({
-            url: '/upload',
+            url: './upload',
             data: formData,
             type: 'POST',
             contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+)
             processData: false, // NEEDED, DON'T OMIT THIS
             success: function (data, textStatus, jqXHR) {
-                $("#waitImg").css("visibility","hidden");
-                var durationStr="durée :"+Math.round(data.duration/1000)+ "sec."
-                self.setMessage("Import terminé " +durationStr+" pages,<br> vous pouvez commencer le découpage","blue")
+                $("#waitImg").css("visibility", "hidden");
+                var durationStr = "durée :" + Math.round(data.duration / 1000) + "sec."
+                var message="Import terminé " + durationStr + " pages,<br> vous pouvez commencer le découpage"
+
+                self.setMessage(message, "blue")
                 var xx = data;
                 self.listScores();
                 $("#scoresSelect").val(data.pdfName);
-                self.openFirstPdfPage();
+                self.openFirstPdfPage(message);
                 document.getElementById("pdfFileInput").value = "";
 
             },
             error: function (err) {
-                $("#waitImg").css("visibility","hidden");
-                self.setMessage("ERREUR lors del'import"+err.responseText,"red")
+                $("#waitImg").css("visibility", "hidden");
+                self.setMessage("ERREUR lors del'import" + err.responseText, "red")
                 document.getElementById("pdfFileInput").value = "";
 
                 var xx = err;
@@ -125,27 +133,29 @@ var scoreParts = (function () {
 
 
         var orderedZones = self.getOrderedZones();
-
+        var margin = parseInt($("#zoneMargin").val());
         var zonesStr = JSON.stringify(orderedZones);
         var payload = {
             generatePart: 1,
             part: part,
+            margin: margin,
             pdfName: pdfName,
             zonesStr: zonesStr
         }
 
-        $("#waitImg").css("visibility","visible");
+        $("#waitImg").css("visibility", "visible");
         $.ajax({
             type: "POST",
-            url: "/score",
+            url: "./score",
             data: payload,
             dataType: "json",
             success: function (data, textStatus, jqXHR) {
-                $("#waitImg").css("visibility","hidden");
+                $("#waitImg").css("visibility", "hidden");
 
                 $("#duplicateZonesButton2").css("visibility", "visible");
-              self.setMessage("la partition "+part+" est générée , <a target='_blanck' href='"+document.location.href+data.result+"'>télécharger</a>","blue");
-
+                var message="la partition " + part + " est générée , <a target='_blanck' href='" + document.location.href + data.result + "'>télécharger</a>"
+                message+="<br> pour l'imprimer pensez à cocher l'option 'ajuster à la page' dans les paramètres d'impression "
+                self.setMessage(message, "blue");
 
 
                 $('body').css('cursor', 'default');
@@ -153,7 +163,7 @@ var scoreParts = (function () {
 
             },
             error: function (err) {
-                $("#waitImg").css("visibility","hidden");
+                $("#waitImg").css("visibility", "hidden");
                 self.setMessage(err, "red")
             }
         });
@@ -262,14 +272,14 @@ var scoreParts = (function () {
         if (zones.length > 0)
             scoreD3.drawZoneRect(zones);
     }
-    self.startAllOver=function(){
+    self.startAllOver = function () {
         scoreD3.deleteAllZones();
         self.openFirstPdfPage();
     }
 
 
     self.setMessage = function (message, color) {
-        $("#message").css("visibility","visible");
+        $("#message").css("visibility", "visible");
         if (!color) {
             color = "black";
         }
@@ -278,7 +288,19 @@ var scoreParts = (function () {
 
 
     }
-    self.getInfos=function(){
+
+    self.getPageNextZoneIndex=function(page){
+        for(var key  in self.pagesZoneData){
+            var index=0;
+            if( self.pagesZoneData[key].page==page)
+                index=Math.max(index,self.pagesZoneData[key].zoneIndex)
+
+
+        }
+        return index;
+    }
+
+    self.getInfos = function () {
 
         self.setMessage("logiciel open source de découpage de partition sous licence MIT <br><a href='mailto://claude.fauconnet@neuf.fr'>Claude Fauconnet</a><br><a href='https://github.com/claudefauconnet/scoreparts'>Source</a>");
 

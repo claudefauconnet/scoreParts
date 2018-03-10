@@ -65,7 +65,11 @@ var scoreSplitter = {
         var time0 = time;
 
         var outputPrefix = path.resolve(__dirname, scoreSplitter.extractedImagesDir + pdfName + "-");
-        var cmd = "\"C:\\Program Files\\GraphicsMagick-1.3.27-Q16\\gm.exe\" convert -density 600 " + pdfPath + " -resize "+imageWitdh+" +adjoin " + outputPrefix + "%d.png"
+
+        var GraphicsMagickExe="gm";
+        if(path.sep=="\\")//windows
+            GraphicsMagickExe= "\"C:\\Program Files\\GraphicsMagick-1.3.27-Q16\\gm.exe\"";
+        var cmd = GraphicsMagickExe+" convert -density 600 " + pdfPath + " -resize "+imageWitdh+" +adjoin " + outputPrefix + "%d.png"
 
         console.log("EXECUTING " + cmd)
         exec(cmd, function (err, stdout, stderr) {
@@ -88,21 +92,20 @@ var scoreSplitter = {
     ,
 
 
-    generatePart: function (pdfName, part, zonesStr, callback) {
+    generatePart: function (pdfName, part, zonesStr,margin, callback) {
 
         var zones = JSON.parse(zonesStr);
 
         //store the zones coordinates for a replay (eventually)
-        fs.writeFileSync(scoreSplitter.imagesDir + "zones-" + pdfName + "-" + part + ".json", zonesStr)
-        scoreSplitter.zones = zones;
+      //  fs.writeFileSync(scoreSplitter.imagesDir + "zones-" + pdfName + "-" + part + ".json", zonesStr)
+    //    scoreSplitter.zones = zones;
 
 
         var targetPagesImages = [];
         async.waterfall([
-            scoreSplitter.cropImages,
+            async.apply(scoreSplitter.cropImages, zones,margin),
             scoreSplitter.setTargetPages,
             scoreSplitter.blitImages,
-
 
         ], function (err, pagesImagesArray) {
             scoreSplitter.wtitePagesToPdf(pdfName, part, pagesImagesArray, function (err, result) {
@@ -117,9 +120,9 @@ var scoreSplitter = {
     ,
 
 
-    cropImages: function (callbackWaterfall) {
+    cropImages: function (zones,margin,callbackWaterfall) {
         var zonesWithImages = []
-        async.eachSeries(scoreSplitter.zones, function (zone, callbackEach) {
+        async.eachSeries(zones, function (zone, callbackEach) {
             var strs = zone.divId.split("z");
             var page = "" + strs[0].substring(1);//(parseInt( )+1;//decalage dans les numero d'images
             var sourceImg = zone.pdfName + "-" + page + ".png";
@@ -150,7 +153,7 @@ var scoreSplitter = {
         }, function (err) {
             if (err)
                 return callbackWaterfall(err);
-            callbackWaterfall(null, zonesWithImages);
+            callbackWaterfall(null, zonesWithImages,margin);
 
         })
 
@@ -158,7 +161,7 @@ var scoreSplitter = {
     }
     ,
 
-    setTargetPages: function (zonesWithImages, callbackWaterfall) {
+    setTargetPages: function (zonesWithImages,margin, callbackWaterfall) {
         var initialYOffset = 20
         var offsetX = 20;
         var offsetY = initialYOffset;
@@ -200,21 +203,21 @@ var scoreSplitter = {
         }
         if (!pageFull)
             pages.push(currentPage);
-        callbackWaterfall(null, pages)
+        callbackWaterfall(null, pages,margin)
 
     }
 
     ,
 
 
-    blitImages: function (pages, callbackWaterfall) {
+    blitImages: function (pages,margin, callbackWaterfall) {
         var targetImages = [];
 
         async.eachSeries(pages, function (page, callbackPages) {
             var scale = page[0].scale;
             targetImages.scale = scale;
-            var w = Math.round((scoreSplitter.pageWidth-20) * scale);
-            var h = Math.round((scoreSplitter.pageHeight-20) * scale);
+            var w = Math.round((scoreSplitter.pageWidth-margin) * scale);
+            var h = Math.round((scoreSplitter.pageHeight-margin) * scale);
             var blanckImg = new Jimp(w, h,0xFFFFFFFF, function (err, blanckImg) {
                 // this image is 256 x 256, every pixel is set to 0x00000000
 

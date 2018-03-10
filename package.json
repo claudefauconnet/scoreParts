@@ -10,6 +10,7 @@
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.9",
     "express": "~4.15.5",
+    "jade": "~1.11.0",
     "jimp": "^0.2.28",
     "morgan": "~1.9.0",
     "pdf-image": "latest",

@@ -40,7 +40,7 @@ router.post('/score', function (req, response, next) {
 
     }
     if (req.body && req.body.generatePart) {
-        scoreSplitter.generatePart(req.body.pdfName, req.body.part, req.body.zonesStr, function (error, result) {
+        scoreSplitter.generatePart(req.body.pdfName, req.body.part, req.body.zonesStr,parseInt(req.body.margin), function (error, result) {
             processResponse(response, error, result)
         })
 

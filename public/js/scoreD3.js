@@ -223,6 +223,7 @@ scoreD3 = (function () {
 
                         }
                         else {//move only dragged zone
+                            return;
                             self.pagesZoneData[zoneId].y = y;
                             var zoneD3 = d3.select(this);
                             zoneD3.attr("transform", "translate(" +  self.pagesZoneData[zoneId].x + "," + y + ")");
