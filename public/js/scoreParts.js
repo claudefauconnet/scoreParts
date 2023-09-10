@@ -1,9 +1,14 @@
 var scoreParts = (function () {
     var self = {};
+
+
     var imagesDir = "./data/images/";
 
-var xxx=window.document.location
+    var xxx = window.document.location
     self.listScores = function () {
+        $('#scoresSelect')
+            .find('option')
+            .remove()
         var payload = {
             listScores: 1
         }
@@ -13,6 +18,7 @@ var xxx=window.document.location
             data: payload,
             dataType: "json",
             success: function (data, textStatus, jqXHR) {
+                data.splice(0,0,"");
                 for (var i = 0; i < data.length; i++) {
                     item = data[i].replace(".pdf", "");
                     $("#scoresSelect").append($('<option>', {
@@ -28,24 +34,37 @@ var xxx=window.document.location
         });
 
     }
+
+
+
+
+
+
+
+
     self.openFirstPdfPage = function (message) {
-        scoreD3.deleteAllZones();
+
         var name = $('#scoresSelect').val();
         $("#scoresSelect").val(name);
         if (name == "")
             return;
         var name2 = imagesDir + name + "-0.png";
+      // ScoreDraw.drawImage(name2);
+      ///  return
+        scoreD3.deleteAllZones();
         scoreD3.drawImage(name2);
         currentPage = 0;
         $("#page").html(" " + (currentPage + 1));
         $('#controlPanelDiv').css('visibility', 'visible');
-        if( !message)
-            message="";
-       message=+"<ul> <li>pour créer une zone : clic sur le milieu d'une portée</li>";
-        message+="<li>pour effacer une zone : clic+Alt sur la zone</li>";
-        message+="<li>pour déplacer une zone : glisser sur la zone avec la souris</li>";
-        message+="<li>pour déplacer toutes les zones d'une page  : clic+Ctl sur une zone</li><ul> ";
-      self.setMessage("cliquez au milieu des portées pour decouper une voix ", "blue")
+        if (!message)
+            message = "";
+        message +="<ul> <li>pour créer une zone de découpage : clic sur le milieu d'une portée</li>";
+        message += "<li>pour effacer une zone : clic+Alt sur la zone</li>";
+        message += "<li>pour déplacer une zone : glisser sur la zone avec la souris</li>";
+        message += "<li>pour déplacer toutes les zones d'une page  : clic+Ctl sur une zone</li>";
+        message += "<li>Une fois le découpage terminé sur toutes les pages, cliquer sur le bouton \"générer voix (pdf)\"</li>";
+        message +="<ul> ";
+        self.setMessage(message, "blue")
 
     }
 
@@ -89,22 +108,36 @@ var xxx=window.document.location
         var form = $("#uploadForm")[0]
         var formData = new FormData(form);
         $("#waitImg").css("visibility", "visible");
-        self.setMessage("import en cours <br>cela peut prendre plusieurs minutes, <br>merci de patientez ...", "blue")
+        self.setMessage("import en cours <br>cela peut prendre plusieurs minutes, <br>merci de patienter ...", "blue")
         $.ajax({
-            url: './upload',
+            url: './pdfUpload',
             data: formData,
             type: 'POST',
             contentType: false, // NEEDED, DON'T OMIT THIS (requires jQuery 1.6+)
             processData: false, // NEEDED, DON'T OMIT THIS
             success: function (data, textStatus, jqXHR) {
                 $("#waitImg").css("visibility", "hidden");
+
+                if (data.bigFile) {
+
+                    self.setMessage("big file " + data.bigFile);
+
+
+                }
+
+
                 var durationStr = "durée :" + Math.round(data.duration / 1000) + "sec."
-                var message="Import terminé " + durationStr + " pages,<br> vous pouvez commencer le découpage"
+                var message = "Import terminé " + durationStr + " pages,<br> vous pouvez commencer le découpage"
 
                 self.setMessage(message, "blue")
                 var xx = data;
-                self.listScores();
-                $("#scoresSelect").val(data.pdfName);
+                $("#scoresSelect").append($('<option>', {
+                    text: data.pdfName,
+                    value: data.pdfName,
+                    selected: "selected"
+                }));
+                // self.listScores();
+                //   $("#scoresSelect").val(data.pdfName);
                 self.openFirstPdfPage(message);
                 document.getElementById("pdfFileInput").value = "";
 
@@ -121,26 +154,49 @@ var xxx=window.document.location
         });
     }
 
-    self.generateInstrumentScore = function () {
+
+    self.saveInstrumentLinePosition=function(){
+        self.generateInstrumentScore(function(err, result){
+
+        })
+
+    }
 
 
+
+
+
+    self.getInstrumentOnpage=function(){
+
+
+
+    }
+
+    self.generateInstrumentScore = function (callback) {
+
+        if (Object.keys(scoreD3.pagesZoneData).length == 0) {
+            return alert("Il faut decouper les zones avant de générer la partie");
+        }
         var part = prompt("nom de la partie");
         if (!part || part == "")
             return;
-        self.setMessage("  La partie est en cours de génération , merci de patientez ...", " blue");
+        self.setMessage("  La partie est en cours de génération , merci de patienter ...", " blue");
         $('body').css("cursor", "progress");
         var pdfName = $('#scoresSelect').val();
+
 
 
         var orderedZones = self.getOrderedZones();
         var margin = parseInt($("#zoneMargin").val());
         var zonesStr = JSON.stringify(orderedZones);
+        var imgScaleCoef=$("#imgScaleCoef").val()
         var payload = {
             generatePart: 1,
             part: part,
             margin: margin,
             pdfName: pdfName,
-            zonesStr: zonesStr
+            zonesStr: zonesStr,
+            imgScaleCoef:imgScaleCoef,
         }
 
         $("#waitImg").css("visibility", "visible");
@@ -153,8 +209,8 @@ var xxx=window.document.location
                 $("#waitImg").css("visibility", "hidden");
 
                 $("#duplicateZonesButton2").css("visibility", "visible");
-                var message="la partition " + part + " est générée , <a target='_blanck' href='" + document.location.href + data.result + "'>télécharger</a>"
-                message+="<br> pour l'imprimer pensez à cocher l'option 'ajuster à la page' dans les paramètres d'impression "
+                var message = "la partition " + part + " est générée , <a target='_blanck' href='" + document.location.href + data.result + "'>télécharger</a>"
+                message += "<br> pour l'imprimer pensez à cocher l'option 'ajuster à la page' dans les paramètres d'impression "
                 self.setMessage(message, "blue");
 
 
@@ -289,11 +345,11 @@ var xxx=window.document.location
 
     }
 
-    self.getPageNextZoneIndex=function(page){
-        for(var key  in self.pagesZoneData){
-            var index=0;
-            if( self.pagesZoneData[key].page==page)
-                index=Math.max(index,self.pagesZoneData[key].zoneIndex)
+    self.getPageNextZoneIndex = function (page) {
+        for (var key  in self.pagesZoneData) {
+            var index = 0;
+            if (self.pagesZoneData[key].page == page)
+                index = Math.max(index, self.pagesZoneData[key].zoneIndex)
 
 
         }

@@ -223,7 +223,7 @@ var scoreSplitter = {
 
 
         ], function (err, pagesImagesArray) {
-            scoreSplitter.wtitePagesToPdf(pdfName, part, pagesImagesArray, function (err, result) {
+            scoreSplitter.writePagesToPdf(pdfName, part, pagesImagesArray, function (err, result) {
                 if (err)
                     return callback(err);
                 callback(null, result);
@@ -366,7 +366,7 @@ var scoreSplitter = {
     ,
 
 
-    wtitePagesToPdf: function (pdfName, part, pagesImagesArray, callback) {
+    writePagesToPdf: function (pdfName, part, pagesImagesArray, callback) {
         var title = pdfName + "-" + part;
         var pdfsDir=path.resolve(__dirname,scoreSplitter.targetPdfDir);
         var partPdfFile =pdfsDir+path.sep + pdfName + "-" + part + ".pdf";

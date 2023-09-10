@@ -7,8 +7,6 @@ var path = require('path');
 var exec = require('child_process').exec;
 
 
-
-
 var scoreSplitter = {
     zones: [],
     //  imagesDir: "./public/data/images/",
@@ -21,6 +19,8 @@ var scoreSplitter = {
     targetPdfDir: "../public/data/pdfs/",
     pageWidth: 595,
     pageHeight: 842,
+    imageScaleCoef:1.10,//agrandit chaque image
+    imageBackOffset:-150,//retrait de l'image vers la gauche
 
     listScores: function (callback) {
         var pdfs = [];
@@ -52,13 +52,15 @@ var scoreSplitter = {
 
 
 
-    pdfToImages: function (pdfPath,quality,callback) {
-        var width=scoreSplitter.pageWidth;
-        var imgQualities={low:width*2,medium:width*4, high:width*8}
-       var imageWitdh=imgQualities[quality];
+    pdfToImages: function (pdfPath, quality,options, callback) {
+        if(!options)
+            options={}
+        var width = scoreSplitter.pageWidth;
+        var imgQualities = {low: width * 2, medium: width * 4, high: width * 8}
+        var imageWitdh = imgQualities[quality];
 
         //   var jarPath = path.resolve(__dirname, "../java/pdfbox-app-2.0.8.jar");
-        var jarPath = path.resolve(__dirname, "../java/pdf2images.jar");
+        // var jarPath = path.resolve(__dirname, "../java/pdf2images.jar");
         var pdfName = path.basename(pdfPath)
         pdfName = pdfName.substring(0, pdfName.lastIndexOf('.'));
         var time = new Date();
@@ -66,10 +68,16 @@ var scoreSplitter = {
 
         var outputPrefix = path.resolve(__dirname, scoreSplitter.extractedImagesDir + pdfName + "-");
 
-        var GraphicsMagickExe="gm";
-        if(path.sep=="\\")//windows
-            GraphicsMagickExe= "\"C:\\Program Files\\GraphicsMagick-1.3.27-Q16\\gm.exe\"";
-        var cmd = GraphicsMagickExe+" convert -density 600 " + pdfPath + " -resize "+imageWitdh+" +adjoin " + outputPrefix + "%d.png"
+        if(options.targetDir)
+            outputPrefix=options.targetDir;
+
+            var pages = "[0-30]"
+        var GraphicsMagickExe = "gm";
+        if (path.sep == "\\") {//windows
+            GraphicsMagickExe = "\"C:\\Program Files\\GraphicsMagick-1.3.40-Q16\\gm.exe\"";
+            GraphicsMagickExe = "\"C:\\Program Files\\GraphicsMagick-1.3.40-Q16\\gm.exe\"";
+        }
+        var cmd = GraphicsMagickExe + " convert -density 600 " + pdfPath + pages + " -resize " + imageWitdh + " +adjoin " + outputPrefix + "%d.png"
 
         console.log("EXECUTING " + cmd)
         exec(cmd, function (err, stdout, stderr) {
@@ -92,23 +100,23 @@ var scoreSplitter = {
     ,
 
 
-    generatePart: function (pdfName, part, zonesStr,margin, callback) {
+    generatePart: function (pdfName, part, zonesStr, margin,imgScaleCoef, callback) {
 
         var zones = JSON.parse(zonesStr);
 
         //store the zones coordinates for a replay (eventually)
-      //  fs.writeFileSync(scoreSplitter.imagesDir + "zones-" + pdfName + "-" + part + ".json", zonesStr)
-    //    scoreSplitter.zones = zones;
+        //  fs.writeFileSync(scoreSplitter.imagesDir + "zones-" + pdfName + "-" + part + ".json", zonesStr)
+        //    scoreSplitter.zones = zones;
 
 
         var targetPagesImages = [];
         async.waterfall([
-            async.apply(scoreSplitter.cropImages, zones,margin),
+            async.apply(scoreSplitter.cropImages, zones, margin),
             scoreSplitter.setTargetPages,
             scoreSplitter.blitImages,
 
         ], function (err, pagesImagesArray) {
-            scoreSplitter.wtitePagesToPdf(pdfName, part, pagesImagesArray, function (err, result) {
+            scoreSplitter.writePagesToPdf(pdfName, part, pagesImagesArray, function (err, result) {
                 if (err)
                     return callback(err);
                 callback(null, result);
@@ -120,7 +128,7 @@ var scoreSplitter = {
     ,
 
 
-    cropImages: function (zones,margin,callbackWaterfall) {
+    cropImages: function (zones, margin, callbackWaterfall) {
         var zonesWithImages = []
         async.eachSeries(zones, function (zone, callbackEach) {
             var strs = zone.divId.split("z");
@@ -153,7 +161,7 @@ var scoreSplitter = {
         }, function (err) {
             if (err)
                 return callbackWaterfall(err);
-            callbackWaterfall(null, zonesWithImages,margin);
+            callbackWaterfall(null, zonesWithImages, margin);
 
         })
 
@@ -161,20 +169,20 @@ var scoreSplitter = {
     }
     ,
 
-    setTargetPages: function (zonesWithImages,margin, callbackWaterfall) {
+    setTargetPages: function (zonesWithImages, margin, callbackWaterfall) {
         var initialYOffset = 20
         var offsetX = 20;
         var offsetY = initialYOffset;
         var vertStep = 5;
         var currentPage = [];
         var maxPageYoffset = 800;
-        var pageFull=false;
+        var pageFull = false;
         var pages = [];
         for (var i = 0; i < zonesWithImages.length; i++) {
             var zone = zonesWithImages[i].zone;
 
             var pageZone = {
-                x: zone.x ,
+                x: zone.x,
                 y: offsetY,
                 img: zonesWithImages[i].img,
                 width: zonesWithImages[i].width,
@@ -184,41 +192,39 @@ var scoreSplitter = {
             }
             currentPage.push(pageZone);
             offsetY += zone.height + vertStep;
-            if (offsetY+ zone.height > maxPageYoffset) {
-                pageFull=true;
+            if (offsetY + zone.height > maxPageYoffset) {
+                pageFull = true;
                 pages.push(currentPage);
                 currentPage = [];
                 offsetY = initialYOffset;
 
-            }else {
-                pageFull=false;
+            } else {
+                pageFull = false;
             }
 
 
-
-
-        //    offsetY += zone.height + vertStep;//*(zonesWithImages[i].scale);
+            //    offsetY += zone.height + vertStep;//*(zonesWithImages[i].scale);
 
 
         }
         if (!pageFull)
             pages.push(currentPage);
-        callbackWaterfall(null, pages,margin)
+        callbackWaterfall(null, pages, margin)
 
     }
 
     ,
 
 
-    blitImages: function (pages,margin, callbackWaterfall) {
+    blitImages: function (pages, margin, callbackWaterfall) {
         var targetImages = [];
 
         async.eachSeries(pages, function (page, callbackPages) {
             var scale = page[0].scale;
             targetImages.scale = scale;
-            var w = Math.round((scoreSplitter.pageWidth-margin) * scale);
-            var h = Math.round((scoreSplitter.pageHeight-margin) * scale);
-            var blanckImg = new Jimp(w, h,0xFFFFFFFF, function (err, blanckImg) {
+            var w = Math.round((scoreSplitter.pageWidth - margin) * scale);
+            var h = Math.round((scoreSplitter.pageHeight - margin) * scale);
+            var blanckImg = new Jimp(w, h, 0xFFFFFFFF, function (err, blanckImg) {
                 // this image is 256 x 256, every pixel is set to 0x00000000
 
                 //     blanckImg.resize(blankWidth,blankHeight);
@@ -265,7 +271,7 @@ var scoreSplitter = {
     ,
 
 
-    wtitePagesToPdf: function (pdfName, part, pagesImagesArray, callback) {
+    writePagesToPdf: function (pdfName, part, pagesImagesArray, callback) {
         var title = pdfName + "-" + part;
         var pdfsDir = path.resolve(__dirname, scoreSplitter.targetPdfDir);
         var partPdfFile = pdfsDir + path.sep + pdfName + "-" + part + ".pdf";
@@ -278,26 +284,27 @@ var scoreSplitter = {
             }
         }
         var partPdfUrl = "data/pdfs/" + pdfName + "-" + part + ".pdf";
-        var doc = new PDFDocument( {size: [scoreSplitter.pageWidth*pagesImagesArray.scale, scoreSplitter.pageHeight*pagesImagesArray.scale]});
-        var pageNumber = 0;
+        var doc = new PDFDocument({size: [scoreSplitter.pageWidth * pagesImagesArray.scale, scoreSplitter.pageHeight * pagesImagesArray.scale]});
+        var pageNumber = 1;
         doc.on('pageAdded',
             function () {
                 // Don't forget the reset the font family, size & color if needed
-                doc.fontSize(8)
-                doc.text(title, 10, 10, {align: 'left'});
-                doc.fontSize(14)
-                doc.text(++pageNumber, 0.5 * (doc.page.width - 100), 40, {width: 100, align: 'center'});
+                doc.fontSize(16)
+                var str=title+" page "+(++pageNumber)
+                doc.text(str, 10, 10, {align: 'left'});
+                //  doc.fontSize(28)
+                // doc.text(++pageNumber, 0.5 * (doc.page.width - 100), 40, {width: 100, align: 'center'});
             }
         );
 
         doc.pipe(fs.createWriteStream(partPdfFile));
 
         for (var i = 0; i < pagesImagesArray.length; i++) {
-         //   doc.image(pagesImagesArray[i], 0, 50, {scale: (1 / pagesImagesArray.scale)})
-            doc.image(pagesImagesArray[i], 0, 50)
+            //   doc.image(pagesImagesArray[i], 0, 50, {scale: (1 / pagesImagesArray.scale)})
+            doc.image(pagesImagesArray[i], scoreSplitter.imageBackOffset, 50,{scale:scoreSplitter.imgScaleCoef})
             if (i == 0) {
-                doc.fontSize(14);
-                doc.text(title, (0.5 * doc.page.width) - 200, 30, {width: 400, align: 'center'});
+                doc.fontSize(36);
+                doc.text(title, (0.5 * doc.page.width) - 400, 30, {width: 800, align: 'center'});
             }
 
             doc.addPage();
@@ -311,7 +318,7 @@ var scoreSplitter = {
 
 
 }
-/*scoreSplitter.pdfToImages("Rameau1.pdf", function (err, result) {
+/*scoreSplitter.pdfToImages("12.3._Coro_Alcina_2_flûtes.pdf", function (err, result) {
     xx = err;
 });*/
 module.exports = scoreSplitter;

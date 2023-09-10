@@ -20,10 +20,12 @@
     <script src="./js/jquery/jquery-ui.min.js"></script>
     <script src="./js/jquery/jquery.printElement.js"></script>
 
-
     <script src="./js/d3/d3.js"></script>
-    <script src="./js/scoreD3.js" charset="UTF-8"></script>
+    <script src="./js/scoreD3.js" charset="UTF-8"></script><!--
+    <script src="./js/scoreDraw.js" charset="UTF-8"></script>-->
     <script src="./js/scoreParts.js" charset="UTF-8"></script>
+    <script src="./js/common.js" charset="UTF-8"></script>
+    <script src="./js/conductor.js" charset="UTF-8"></script>
 
 
     <!--script src="js/devisuProxy.js" charset="UTF-8"></script
@@ -44,7 +46,7 @@
         button {
             margin: 10px;
             font-size: 14px;
-            font-weight:normal ;
+            font-weight: normal;
         }
 
         #imageSplitterDiv {
@@ -59,7 +61,6 @@
             left: 10px;
             position: absolute;
         }
-
 
 
         .dragRect {
@@ -96,7 +97,7 @@
             font-size: 14px;
             font-style: italic;
             color: black;
-            width:350px;
+            width: 350px;
             height: 200px;
             overflow: auto;
 
@@ -104,19 +105,18 @@
 
         .buttonImportant {
 
-            background-color: dimgrey;
+            background-color: #fcefa1;
         }
-
-
 
 
     </style>
 
     <script>
-var currentPage=0;
-var  currentZoneInPage = 0;
+        var currentPage = 0;
+        var currentZoneInPage = 0;
         $(function () {
-            scoreParts.listScores()
+            scoreParts.listScores();
+            Conductor.loadInstruments()
 
         });
 
@@ -133,7 +133,7 @@ var  currentZoneInPage = 0;
     <tr>
         <td>
             <input type="image" onclick='scoreParts.getInfos()' width="20px" src="images/infos.png">
-            Ouvrir partition : <select id="scoresSelect" onchange="scoreParts.openFirstPdfPage()">
+            Ouvrir partition : <select id="scoresSelect" onchange="scoreParts.openFirstPdfPage('')">
             <option>&nbsp;</option>
         </select>
         </td>
@@ -145,14 +145,14 @@ var  currentZoneInPage = 0;
             <div id="importDiv">
 
 
-                <form enctype="multipart/form-data" id="uploadForm" >
+                <form enctype="multipart/form-data" id="uploadForm">
 
-                    <input type="file" name="pdfFile" id="pdfFileInput" onchange="scoreParts.uploadFormData()" >
-                    Qualite <select name="imageQuality" >
-                        <option value="low">faible</option>
-                        <option value="medium" selected>moyenne</option>
-                        <option value="high">haute</option>
-                    </select>
+                    <input type="file" name="pdfFile" id="pdfFileInput" onchange="scoreParts.uploadFormData()">
+                    Qualite <select name="imageQuality">
+                    <option value="low">faible</option>
+                    <option value="medium" selected>moyenne</option>
+                    <option value="high">haute</option>
+                </select>
 
                 </form>
 
@@ -167,10 +167,8 @@ var  currentZoneInPage = 0;
 </table>
 
 
-
-
 <div id="controlPanelDiv" style="visibility: hidden">
-    <td><img src="images/waitAnimated.gif" id="waitImg" width="20px" style="visibility: hidden" ></td>
+    <td><img src="images/waitAnimated.gif" id="waitImg" width="20px" style="visibility: hidden"></td>
     <div id="message"></div>
     <table>
         <tr>
@@ -189,14 +187,16 @@ var  currentZoneInPage = 0;
         </tr>
         <tr>
             <td>
-                hauteur zone<input id="zoneHeight" value="55" size="3">   marge<input id="zoneMargin" value="15" size="3"> <br>
+                hauteur zone<input id="zoneHeight" value="55" size="3"> marge<input id="zoneMargin" value="15" size="3">
+                <br>
+                coef<input id="imgScaleCoef" value="1.1" size="3"> <br>
                 <button onclick="scoreParts.repeatZonesFromPreviousPage(this)" style="visibility: hidden"
                         id="duplicateZonesButton">dupliquer les zones
                 </button>
                 <br>
-          <!--      <button onclick="scoreParts.repeatZonesFromPreviousPart(this)" style="visibility: hidden"
-                        id="duplicateZonesButton2">dupliquer les zones 2
-                </button>-->
+                <!--      <button onclick="scoreParts.repeatZonesFromPreviousPart(this)" style="visibility: hidden"
+                              id="duplicateZonesButton2">dupliquer les zones 2
+                      </button>-->
 
             </td>
         </tr>
@@ -210,7 +210,8 @@ var  currentZoneInPage = 0;
         </tr>
         <tr>
             <td>
-                <button class="buttonImportant" onclick="scoreParts.generateInstrumentScore()">Générer voix (pdf)
+                <button class="buttonImportant" id="generatePartButton" style="visibility:hidden"
+                        onclick="scoreParts.generateInstrumentScore()">Générer voix (pdf)
 
                 </button>
             </td>
@@ -223,12 +224,32 @@ var  currentZoneInPage = 0;
         </tr>
     </table>
 
+
+    <div>
+
+        Conducteur
+        Instrument <select id="instrumentSelect" onchange=Conductor.registerInstrument()></select>
+        <br>
+        <button onclick="Conductor.registerAllInstruments()">register allInstruments</button>
+        <br>
+        <button onclick="Conductor.saveConductorPartsPositions()">Save positions</button>
+        <button onclick="Conductor.loadConductorPartsPositions()">Load positions</button>
+        <button onclick="Conductor.clearConductorPartsPositions()">Clear positions</button>
+
+
+    </div>
+
 </div>
 
 
-</body>
 <div id="imageSplitterDiv">
+    <img id="myImg" style="position:relative;top:0;left:0"/>
+    <canvas id="myCanvas" style="position:relative;top:0;left:0">
 
+
+    </canvas>
 
 </div>
 <div id="resultDiv"></div>
+
+</body>

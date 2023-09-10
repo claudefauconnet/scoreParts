@@ -6,6 +6,7 @@
     "start": "node ./bin/www"
   },
   "dependencies": {
+    "async": "latest",
     "body-parser": "~1.18.2",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.9",
@@ -13,18 +14,16 @@
     "jade": "~1.11.0",
     "jimp": "^0.2.28",
     "morgan": "~1.9.0",
-    "pdf-image": "latest",
-    "async": "latest",
-    "serve-favicon": "~2.4.5",
     "multer": "latest",
-    "pdfkit": "latest"
+    "pdf-image": "latest",
+    "pdfkit": "^0.12.1",
+    "serve-favicon": "~2.4.5"
   },
   "description": "score scrapper",
   "main": "app.js",
   "bin": {
     "scoreparts": "scoreSplitter..js"
   },
-  "devDependencies": {},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/claudefauconnet/scoreparts.git"

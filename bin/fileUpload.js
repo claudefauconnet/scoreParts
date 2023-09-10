@@ -38,7 +38,9 @@ var diskStorage = multer.diskStorage({
     },
     filename: function (request, file, callback) {
         console.log(file);
-        callback(null, file.originalname)
+var fileName=file.originalname.trim();
+
+        callback(null, file.originalname.replace(/ /g,"_"));
     }
 });
 var memStorage = multer.memoryStorage()

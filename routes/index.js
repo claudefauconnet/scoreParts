@@ -3,20 +3,26 @@ var router = express.Router();
 var scoreSplitter = require("../bin/scoreSplitter..js");
 var fileUpload = require('../bin/fileUpload.js');
 
+var fs=require('fs')
+var path=require('path')
+
 /* GET home page. */
 router.get('/', function (req, res, next) {
     res.render('index', {title: 'Express'});
 });
 
-router.post('/upload', function (req, response) {
+router.post('/pdfUpload', function (req, response) {
     fileUpload.upload(req,"pdfFile", function (error, file,reqBody) {
         if (error) {
             return processResponse(response, error);
         }
+        if(file.size>6000000){
+            return processResponse(response, null,{bigFile:file.size});
+        }
         if (!file || !file.path) {
             return processResponse(response, "wrong file", null);
         }
-        scoreSplitter.pdfToImages(file.path, reqBody.imageQuality,function (error, result) {
+        scoreSplitter.pdfToImages(file.path, reqBody.imageQuality,{},function (error, result) {
             processResponse(response, error, result)
         });
     });
@@ -40,7 +46,30 @@ router.post('/score', function (req, response, next) {
 
     }
     if (req.body && req.body.generatePart) {
-        scoreSplitter.generatePart(req.body.pdfName, req.body.part, req.body.zonesStr,parseInt(req.body.margin), function (error, result) {
+        scoreSplitter.generatePart(req.body.pdfName, req.body.part, req.body.zonesStr,parseInt(req.body.margin), parseInt(req.body.imgScaleCoef),function (error, result) {
+            processResponse(response, error, result)
+        })
+
+
+    }
+
+
+});
+router.post('/file', function (req, response, next) {
+
+
+    if (req.body && req.body.save) {
+        var dirPath=path.resolve(__dirname,"../data/")
+        fs.writeFile(dirPath+path.sep+req.body.filePath,req.body.contentStr, null,function(error, result){
+
+            processResponse(response, error, result)
+        })
+
+    }
+    if (req.body && req.body.load) {
+        var dirPath=path.resolve(__dirname,"../data/")
+        fs.readFile(dirPath+path.sep+req.body.filePath, null,function(error, result){
+
             processResponse(response, error, result)
         })
 
