@@ -1,37 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="cd007939-7fbd-4eae-9504-25a4facc9d1a" name="Default" comment="implements ScoreDraw with canvas instead of d3">
-      <change afterPath="$PROJECT_DIR$/bin/pdfSplitter..js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/pdfSplitter2..js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/splitPDF..js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/htmlSnippets/bigFileDialog.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/js/common.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/js/conductor.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/js/scoreDraw.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+    <list default="true" id="cd007939-7fbd-4eae-9504-25a4facc9d1a" name="Default" comment="add conductor.js">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/app.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/fileUpload.js" beforeDir="false" afterPath="$PROJECT_DIR$/bin/fileUpload.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/scoreSplitter..js" beforeDir="false" afterPath="$PROJECT_DIR$/bin/scoreSplitter..js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/scoreSplitterJava..js" beforeDir="false" afterPath="$PROJECT_DIR$/bin/scoreSplitterJava..js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/pdf/output00.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/pdf/output01.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/pdf/output02.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/pdf/output03.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/pdf/output04.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/pdf/output05.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/pdf/output06.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/pdf/output07.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/pdf/output08.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/pdf/output09.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/pdf/output10.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/pdf/output11.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/public/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/scoreD3.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/scoreD3.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/scoreParts.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/scoreParts.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/routes/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/routes/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/js/conductor.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/conductor.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -108,7 +80,7 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "WebServerToolWindowFactoryState": "true",
-    "last_opened_file_path": "D:/webstorm/scoreparts",
+    "last_opened_file_path": "D:/webstorm/souslesensVocables",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -216,8 +188,16 @@
       <workItem from="1675621865933" duration="8000" />
       <workItem from="1687101486282" duration="8432000" />
       <workItem from="1694345081419" duration="3414000" />
-      <workItem from="1694356796217" duration="6166000" />
+      <workItem from="1694356796217" duration="7580000" />
     </task>
+    <task id="LOCAL-00001" summary="add conductor.js">
+      <created>1694363133077</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1694363133077</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -236,7 +216,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="implements ScoreDraw with canvas instead of d3" />
-    <option name="LAST_COMMIT_MESSAGE" value="implements ScoreDraw with canvas instead of d3" />
+    <MESSAGE value="add conductor.js" />
+    <option name="LAST_COMMIT_MESSAGE" value="add conductor.js" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -255,18 +236,6 @@
           <url>file://$PROJECT_DIR$/public/js/scoreD3.js</url>
           <line>42</line>
           <option name="timeStamp" value="308" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/routes/index.js</url>
-          <line>62</line>
-          <properties lambdaOrdinal="-1" />
-          <option name="timeStamp" value="314" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/routes/index.js</url>
-          <line>64</line>
-          <properties lambdaOrdinal="-1" />
-          <option name="timeStamp" value="315" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

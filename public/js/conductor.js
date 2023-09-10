@@ -72,8 +72,10 @@ var Conductor=(function(){
             success: function (data, textStatus, jqXHR) {
                 self.conductorPartsPositions=data
                 var x=data;
+
                 for(var instrument in data){
-                    var zone=data[instrument].zones[0]
+                    var zone=data[instrument].zones[data[instrument].zones.length-1]
+
                     var rect={
                         x:zone.x,
                         y:zone.y,
@@ -97,11 +99,11 @@ var Conductor=(function(){
 
                     }).style("opacity", 0.5);
 
-                    zoneDiv.append("text").attr("id", function (d) {
+                /*    zoneDiv.append("text").attr("id", function (d) {
                         return "T_" + zone.divId;
                     }).attr("y", "15px").attr("x", "10px").text(function (d) {
                         return "xxxxx";
-                    }).style("fill", "black").attr("class", "textSmall").style("font-size", "12px");
+                    }).style("fill", "black").attr("class", "textSmall").style("font-size", "12px");*/
 
                 }
 
