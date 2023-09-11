@@ -28,6 +28,9 @@
     <script src="./js/conductor.js" charset="UTF-8"></script>
 
 
+    <script src="./js/async.js" charset="UTF-8"></script>
+
+
     <!--script src="js/devisuProxy.js" charset="UTF-8"></script
     <script src="js/imageSplitter.js" charset="UTF-8"></script>-->
 
@@ -235,6 +238,21 @@
         <button onclick="Conductor.saveConductorPartsPositions()">Save positions</button>
         <button onclick="Conductor.loadConductorPartsPositions()">Load positions</button>
         <button onclick="Conductor.clearConductorPartsPositions()">Clear positions</button>
+
+
+        <br>
+        <button onclick="Conductor.moveAllZones('up')">up</button>
+        <button onclick="Conductor.moveAllZones('down')">down</button>
+        <button onclick="Conductor.moveAllZones('left')"><-</button>
+        <button onclick="Conductor.moveAllZones('right')">-></button>
+
+        <br>
+        <button onclick="Conductor.registerPagePositions('up')">registerPagePositions</button>
+        <button onclick="Conductor.savePagesPositions('up')">savePagesPositions</button>
+        <button onclick="Conductor.clearPagePositions('up')">clearPagesPositions</button>
+<br>
+
+        <button onclick="Conductor.generateConductorParts('up')">generateConductorParts</button>
 
 
     </div>

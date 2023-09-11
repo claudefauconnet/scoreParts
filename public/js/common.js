@@ -1,7 +1,7 @@
 var Common=(function(){
 
     var self={}
-
+    self.resourceColorPalettes={}
     self.fillSelectOptions = function (selectId, data, withBlanckOption, textfield, valueField, selectedValue) {
         $("#" + selectId)
             .find("option")
@@ -55,6 +55,42 @@ var Common=(function(){
             }
         }
     };
+    self.getResourceColor = function (resourceType, resourceId, palette) {
+        if (!palette) {
+            palette = "palette";
+        }
+        if (!self.resourceColorPalettes[resourceType]) {
+            self.resourceColorPalettes[resourceType] = {};
+        }
+        var color = self.resourceColorPalettes[resourceType][resourceId];
+        if (!color) {
+            color = Common[palette][Object.keys(self.resourceColorPalettes[resourceType]).length];
+            self.resourceColorPalettes[resourceType][resourceId] = color;
+        }
+        return color;
+    };
+    self.palette = [
+        "#9edae5",
+        "#17becf",
+        "#dbdb8d",
+        "#bcbd22",
+        "#c7c7c7",
+        "#7f7f7f",
+        "#f7b6d2",
+        "#e377c2",
+        "#c49c94",
+        "#c5b0d5",
+        "#ff9896",
+        "#98df8a",
+        "#ffbb78",
+        "#ff7f0e",
+        "#aec7e8",
+        "#1f77b4",
+        "#9467bd",
+        "#8c564b",
+        "#d62728",
+        "#2ca02c",
+    ];
     return self;
 
 })()

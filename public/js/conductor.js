@@ -1,43 +1,46 @@
-var Conductor=(function(){
-   var self={}
+var Conductor = (function () {
+    var self = {}
 
-    self.conductorPartsPositions={}
+    self.conductorPartsPositions = {}
+    self.conductorPagesPositions = []
 
-
-    self.loadInstruments=function(){
-        Common.fillSelectOptions("instrumentSelect",self.instruments,true)
+    self.loadInstruments = function () {
+        Common.fillSelectOptions("instrumentSelect", self.instruments, true)
 
 
     }
 
-    self.registerInstrument=function(){
-        var instrument=$("#instrumentSelect").val();
-        if(!instrument)
-            return ;
+    self.registerInstrument = function () {
+        var instrument = $("#instrumentSelect").val();
+        if (!instrument)
+            return;
         var orderedZones = scoreParts.getOrderedZones();
         var margin = parseInt($("#zoneMargin").val());
-        var imgScaleCoef=$("#imgScaleCoef").val()
-        self.conductorPartsPositions[instrument]={
+        var imgScaleCoef = $("#imgScaleCoef").val()
+        self.conductorPartsPositions[instrument] = {
             margin: margin,
 
             zones: orderedZones,
-            imgScaleCoef:imgScaleCoef
+            imgScaleCoef: imgScaleCoef
         }
 
 
     }
-    
-    
-    self.registerAllInstruments=function(){
+
+
+    self.registerAllInstruments = function () {
 
     }
 
-    self.saveConductorPartsPositions=function(){
+    self.saveConductorPartsPositions = function () {
+
+        if (!confirm("save new position :ATTENTION"))
+            return;
         var pdfName = $('#scoresSelect').val();
         var payload = {
             save: 1,
-            filePath:"positions/"+pdfName+".json",
-           contentStr:JSON.stringify(self.conductorPartsPositions)
+            filePath: "positions/" + pdfName + ".json",
+            contentStr: JSON.stringify(self.conductorPartsPositions)
         }
         $.ajax({
             type: "POST",
@@ -57,12 +60,12 @@ var Conductor=(function(){
         });
 
     }
-    self.loadConductorPartsPositions=function(){
+    self.loadConductorPartsPositions = function () {
 
         var pdfName = $('#scoresSelect').val();
         var payload = {
             load: 1,
-            filePath:"positions/"+pdfName+".json",
+            filePath: "positions/" + pdfName + ".json",
         }
         $.ajax({
             type: "POST",
@@ -70,19 +73,20 @@ var Conductor=(function(){
             data: payload,
             dataType: "json",
             success: function (data, textStatus, jqXHR) {
-                self.conductorPartsPositions=data
-                var x=data;
+                self.conductorPartsPositions = data
+                var x = data;
+                self.dx = 0;
+                self.dy = 0;
+                for (var instrument in data) {
+                    var zone = data[instrument].zones[0]
 
-                for(var instrument in data){
-                    var zone=data[instrument].zones[data[instrument].zones.length-1]
-
-                    var rect={
-                        x:zone.x,
-                        y:zone.y,
-                        width:zone.width,
-                        height:zone.height,
+                    var rect = {
+                        x: zone.x,
+                        y: zone.y,
+                        width: zone.width,
+                        height: zone.height,
                     }
-                   var zoneDiv= svgSplitter.append("rect").attr("id", function (d) {
+                    var zoneDiv = svgSplitter.append("rect").attr("id", function (d) {
                         return "R_" + zone.divId;
                     }).attr("width", function (d) {
                         return rect.width;
@@ -94,21 +98,39 @@ var Conductor=(function(){
                         return rect.y;
                     }).style("stroke", "black").style("fill", function (d) {
                         var color = "F9B154";
-
+                        color = Common.getResourceColor("instrument", instrument)
                         return color;
 
-                    }).style("opacity", 0.5);
+                    }).style("opacity", 0.4)
 
-                /*    zoneDiv.append("text").attr("id", function (d) {
-                        return "T_" + zone.divId;
-                    }).attr("y", "15px").attr("x", "10px").text(function (d) {
-                        return "xxxxx";
-                    }).style("fill", "black").attr("class", "textSmall").style("font-size", "12px");*/
+                        .attr("group", function (d) {
+                            return "conductorZones";
+                        })
+
+
+                    /*    zoneDiv.append("text").attr("id", function (d) {
+                            return "T_" + zone.divId;
+                        }).attr("y", "15px").attr("x", "10px").text(function (d) {
+                            return "xxxxx";
+                        }).style("fill", "black").attr("class", "textSmall").style("font-size", "12px");*/
 
                 }
+                $("body").keydown(function (e) {
+
+                    if (e.keyCode == 38) {
+                        self.moveAllZones("up")
+                    } else if (e.keyCode == 40) {
+                        self.moveAllZones("down")
+                    } else if (e.keyCode == 37) {
+                        self.moveAllZones("left")
+                    } else if (e.keyCode == 39) {
+                        self.moveAllZones("right")
+                    }
 
 
-                scoreParts.setMessage("postions saved", "blue");
+                })
+
+
                 $('body').css('cursor', 'default');
 
 
@@ -120,17 +142,120 @@ var Conductor=(function(){
         });
     }
 
+    self.moveAllZones = function (direction) {
+        var step = 2;
 
-    self.clearConductorPartsPositions=function(){
-       self.conductorPartsPositions={}
+        if (direction == "up") {
+            self.dy -= step
+        } else if (direction == "down") {
+            self.dy += step
+        } else if (direction == "left") {
+            self.dx -= step
+        } else if (direction == "right") {
+            self.dx += step
+        }
+
+        var xx = svgSplitter.selectAll("rect")
+        var xx = svgSplitter.selectAll("rect").attr("transform", function (d) {
+
+            return "translate(" + self.dx + "," + self.dy + ")";
+        })
+
+
+    }
+
+
+    self.clearConductorPartsPositions = function () {
+        self.conductorPartsPositions = {}
         scoreParts.startAllOver()
 
     }
-    
-    
-    
-    
-    self.instruments=[
+    self.registerPagePositions = function () {
+        var page = scoreParts.currentPage
+
+        var pageConductorPartsPositions = {}
+        for (var instrument in self.conductorPartsPositions) {
+            pageConductorPartsPositions[instrument] = {margin: self.conductorPartsPositions.margin, zones: []}
+            var zone = JSON.parse(JSON.stringify( self.conductorPartsPositions[instrument].zones[0]))
+            zone.x += self.dx;
+            zone.y += self.dy;
+            var zoneId = zone.label.replace("p0", "p" + (page))
+            zone.label = zoneId
+            zone.divId = zoneId
+            zone.page = page
+
+            pageConductorPartsPositions[instrument].zones.push(zone)
+
+        }
+
+
+        self.conductorPagesPositions.push(pageConductorPartsPositions)
+
+
+
+
+    }
+
+
+    self.savePagesPositions = function () {
+        self.self.conductorPagesPositions = []
+    }
+
+    self.savePagesPositions = function () {
+        var pdfName = $('#scoresSelect').val();
+        var payload = {
+            save: 1,
+            filePath: "positions/" + pdfName + "_pages_positions.json",
+            contentStr: JSON.stringify(self.conductorPartsPositions)
+        }
+        $.ajax({
+            type: "POST",
+            url: "./file",
+            data: payload,
+            dataType: "json",
+            success: function (data, textStatus, jqXHR) {
+                scoreParts.setMessage("_pages_positions saved", "blue");
+                $('body').css('cursor', 'default');
+
+
+            },
+            error: function (err) {
+                $("#waitImg").css("visibility", "hidden");
+                scoreParts.setMessage(err.responseText, "red")
+            }
+        });
+
+    }
+
+    self.generateConductorParts=function(){
+        self.instrumentsZones = {}
+        self.conductorPagesPositions.forEach(function (item) {
+            for (var instrument in item) {
+                if (!self.instrumentsZones[instrument]) {
+                    self.instrumentsZones[instrument] = {margin: "", zones: []}
+                }
+                self.instrumentsZones[instrument].zones.push(item[instrument].zones[0])
+            }
+
+        })
+
+        var instruments= Object.keys(self.instrumentsZones)
+
+        async.eachSeries(instruments,function(instrument,callbackEach){
+            scoreParts.setMessage("generating instrument "+instrument)
+            var zones=self.instrumentsZones[instrument].zones
+            scoreParts.generateInstrumentScore(instrument,zones,function(err, result){
+                callbackEach()
+            })
+        },function(err){
+            alert ("all done")
+        })
+
+
+
+    }
+
+    self.instruments = [
         "Flute 1",
         "Flute Picollo",
         "Oboe 1,2",
@@ -153,20 +278,9 @@ var Conductor=(function(){
         "Kontrabas 1",
 
     ]
-    
-    
-    
-    
-    
-    
-    
-    
 
 
-
-   return self;
-
-
+    return self;
 
 
 })()
